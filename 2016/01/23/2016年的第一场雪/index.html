@@ -57,15 +57,23 @@
 
 
 
-<meta name="description" content="做自己喜欢的事儿,顺手改变世界">
-<meta property="og:type" content="website">
+<meta name="description" content="自定义View几个重要的函数简单讲解自定义View相关的几个重要的函数。
+作者微博: @攻城师sloop作为一个有(hui)追(zhuang)求(B)的程序员，肯定想做一些让人眼前一亮的程序效果，但是系统提供的那些一般很难满足，为了梦(zhuang)想(B)就必须要学习一些自定义View。下面我们就了解一些自定义View相关的东西。
+一.自定义View分类我将自定义View分为了两类(只是我自己的">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Skykai">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2016/01/23/2016年的第一场雪/index.html">
 <meta property="og:site_name" content="Skykai">
-<meta property="og:description" content="做自己喜欢的事儿,顺手改变世界">
+<meta property="og:description" content="自定义View几个重要的函数简单讲解自定义View相关的几个重要的函数。
+作者微博: @攻城师sloop作为一个有(hui)追(zhuang)求(B)的程序员，肯定想做一些让人眼前一亮的程序效果，但是系统提供的那些一般很难满足，为了梦(zhuang)想(B)就必须要学习一些自定义View。下面我们就了解一些自定义View相关的东西。
+一.自定义View分类我将自定义View分为了两类(只是我自己的">
+<meta property="og:image" content="https://github.com/GcsSloop/AndroidNote/blob/master/%E9%97%AE%E9%A2%98/%E5%9D%90%E6%A0%87%E7%B3%BB/Art/%E5%9D%90%E6%A0%87%E7%B3%BB5.png">
+<meta property="og:updated_time" content="2016-01-23T07:16:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Skykai">
-<meta name="twitter:description" content="做自己喜欢的事儿,顺手改变世界">
+<meta name="twitter:description" content="自定义View几个重要的函数简单讲解自定义View相关的几个重要的函数。
+作者微博: @攻城师sloop作为一个有(hui)追(zhuang)求(B)的程序员，肯定想做一些让人眼前一亮的程序效果，但是系统提供的那些一般很难满足，为了梦(zhuang)想(B)就必须要学习一些自定义View。下面我们就了解一些自定义View相关的东西。
+一.自定义View分类我将自定义View分为了两类(只是我自己的">
 
 
 
@@ -83,7 +91,7 @@
   };
 </script>
 
-  <title> Skykai </title>
+  <title>  | Skykai </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
@@ -102,9 +110,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -183,24 +189,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
 
+  <div id="posts" class="posts-expand">
     
-
-    
-    
-      
-      
-        
-        
-        
-      
-
-      
-    
-
-    
-      
 
   
   
@@ -221,9 +212,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/01/23/2016年的第一场雪/" itemprop="url">
-                  未命名
-                </a>
               
             
           </h1>
@@ -261,9 +249,7 @@
       
 
       
-        
-          
-            <h1 id="u81EA_u5B9A_u4E49View_u51E0_u4E2A_u91CD_u8981_u7684_u51FD_u6570"><a href="#u81EA_u5B9A_u4E49View_u51E0_u4E2A_u91CD_u8981_u7684_u51FD_u6570" class="headerlink" title="自定义View几个重要的函数"></a>自定义View几个重要的函数</h1><p>简单讲解自定义View相关的几个重要的函数。</p>
+        <h1 id="u81EA_u5B9A_u4E49View_u51E0_u4E2A_u91CD_u8981_u7684_u51FD_u6570"><a href="#u81EA_u5B9A_u4E49View_u51E0_u4E2A_u91CD_u8981_u7684_u51FD_u6570" class="headerlink" title="自定义View几个重要的函数"></a>自定义View几个重要的函数</h1><p>简单讲解自定义View相关的几个重要的函数。</p>
 <h3 id="u4F5C_u8005_u5FAE_u535A_3A_@_u653B_u57CE_u5E08sloop"><a href="#u4F5C_u8005_u5FAE_u535A_3A_@_u653B_u57CE_u5E08sloop" class="headerlink" title="作者微博: @攻城师sloop"></a>作者微博: <a href="http://weibo.com/5459430586" target="_blank" rel="external">@攻城师sloop</a></h3><p>作为一个<b>有(hui)追(zhuang)求(B)</b>的程序员，肯定想做一些让人眼前一亮的程序效果，但是系统提供的那些一般很难满足，为了<b>梦(zhuang)想(B)</b>就必须要学习一些自定义View。下面我们就了解一些自定义View相关的东西。</p>
 <h2 id="u4E00-_u81EA_u5B9A_u4E49View_u5206_u7C7B"><a href="#u4E00-_u81EA_u5B9A_u4E49View_u5206_u7C7B" class="headerlink" title="一.自定义View分类"></a>一.自定义View分类</h2><h3 id="u6211_u5C06_u81EA_u5B9A_u4E49View_u5206_u4E3A_u4E86_u4E24_u7C7B_28_u53EA_u662F_u6211_u81EA_u5DF1_u7684_u5206_u7C7B_29_uFF1A"><a href="#u6211_u5C06_u81EA_u5B9A_u4E49View_u5206_u4E3A_u4E86_u4E24_u7C7B_28_u53EA_u662F_u6211_u81EA_u5DF1_u7684_u5206_u7C7B_29_uFF1A" class="headerlink" title="我将自定义View分为了两类(只是我自己的分类)："></a>我将自定义View分为了两类(只是我自己的分类)：</h3><h3 id="1-_u81EA_u5B9A_u4E49ViewGroup"><a href="#1-_u81EA_u5B9A_u4E49ViewGroup" class="headerlink" title="1.自定义ViewGroup"></a>1.自定义ViewGroup</h3><p>  自定义ViewGroup一般是利用现有的组件根据特定的布局方式来组成新的组件，大多继承自ViewGroup或各种Layout，包含有子View。</p>
 <p>  例如：一个应用内的底部导航条中的条目，一般都是上面为图标，下面是文字，那么这两个就可以用自定义ViewGroup组合成为一个Veiw，提供两个属性分别用来设置文字和图片即可，这样使用起来会方便很多。</p>
@@ -454,8 +440,6 @@
 </table>
 <h2 id="u53C2_u8003_u8D44_u6599_uFF1A"><a href="#u53C2_u8003_u8D44_u6599_uFF1A" class="headerlink" title="参考资料："></a>参考资料：</h2><p><a href="http://developer.android.com/reference/android/view/View.html" target="_blank" rel="external">View</a><br><br><a href="http://developer.android.com/reference/android/view/ViewGroup.html" target="_blank" rel="external">ViewGroup</a><br><a href="http://developer.android.com/reference/android/view/View.MeasureSpec.html" target="_blank" rel="external">View.MeasureSpec</a><br><br><a href="http://blog.csdn.net/a396901990/article/details/36475213" target="_blank" rel="external">onMeasure，MeasureSpec源码 流程 思路详解</a><br><br><br><br><a href="http://www.cnblogs.com/angeldevil/p/3479431.html" target="_blank" rel="external">Android中自定义样式与View的构造函数中的第三个参数defStyle的意义</a> <br><br><a href="http://blog.csdn.net/z103594643/article/details/6755017" target="_blank" rel="external">android view构造函数研究</a><br><br><a href="http://blog.csdn.net/mybeta/article/details/39993449" target="_blank" rel="external">Android View构造方法第三参数使用方法详解</a><br><br><br><br><a href="http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2014/1102/1891.html" target="_blank" rel="external">Android 自定义View onMeasure方法的实现</a><br><br><a href="http://wangkuiwu.github.io/2014/06/20/View-OnMeasure/" target="_blank" rel="external">Android API指南(二)自定义控件02之 onMeasure</a><br><br><a href="http://www.cnblogs.com/mengdd/p/3332882.html" target="_blank" rel="external">Android中View的绘制过程 onMeasure方法简述</a><br></p>
 
-          
-        
       
     </div>
 
@@ -463,112 +447,32 @@
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/01/22/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2016/01/22/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">發表於</span>
-            <time itemprop="dateCreated" datetime="2016-01-22T14:47:05+08:00" content="2016-01-22">
-              2016-01-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
 
-  </section>
-
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -576,6 +480,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -595,8 +503,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://avatars0.githubusercontent.com/u/8402109?v=3&s=400"
@@ -643,6 +560,23 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u81EA_u5B9A_u4E49View_u51E0_u4E2A_u91CD_u8981_u7684_u51FD_u6570"><span class="nav-number">1.</span> <span class="nav-text">自定义View几个重要的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F5C_u8005_u5FAE_u535A_3A_@_u653B_u57CE_u5E08sloop"><span class="nav-number">1.0.1.</span> <span class="nav-text">作者微博: @攻城师sloop</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E00-_u81EA_u5B9A_u4E49View_u5206_u7C7B"><span class="nav-number">1.1.</span> <span class="nav-text">一.自定义View分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u6211_u5C06_u81EA_u5B9A_u4E49View_u5206_u4E3A_u4E86_u4E24_u7C7B_28_u53EA_u662F_u6211_u81EA_u5DF1_u7684_u5206_u7C7B_29_uFF1A"><span class="nav-number">1.1.1.</span> <span class="nav-text">我将自定义View分为了两类(只是我自己的分类)：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_u81EA_u5B9A_u4E49ViewGroup"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.自定义ViewGroup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_u81EA_u5B9A_u4E49View"><span class="nav-number">1.1.3.</span> <span class="nav-text">2.自定义View</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E8C-_u51E0_u4E2A_u91CD_u8981_u7684_u51FD_u6570"><span class="nav-number">1.2.</span> <span class="nav-text">二.几个重要的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_u6784_u9020_u51FD_u6570"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_u6D4B_u91CFView_u5927_u5C0F_28onMeasure_29"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.测量View大小(onMeasure)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q_3A__u4E3A_u4EC0_u4E48_u8981_u6D4B_u91CFView_u5927_u5C0F_uFF1F"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Q: 为什么要测量View大小？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#A_3A_View_u7684_u5927_u5C0F_u4E0D_u4EC5_u7531_u81EA_u8EAB_u6240_u51B3_u5B9A_uFF0C_u540C_u65F6_u4E5F_u4F1A_u53D7_u5230_u7236_u63A7_u4EF6_u7684_u5F71_u54CD_uFF0C_u4E3A_u4E86_u6211_u4EEC_u7684_u63A7_u4EF6_u80FD_u66F4_u597D_u7684_u9002_u5E94_u5404_u79CD_u60C5_u51B5_uFF0C_u6240_u6709_u6211_u4EEC_u4E00_u822C_u4F1A_u81EA_u5DF1_u8FDB_u884C_u6D4B_u91CF_u3002"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">A: View的大小不仅由自身所决定，同时也会受到父控件的影响，为了我们的控件能更好的适应各种情况，所有我们一般会自己进行测量。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6D4B_u91CFView_u4F7F_u7528_u7684_u51FD_u6570"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">测量View使用的函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6A21_u5F0F_u4E00_u5171_u6709_u4E09_u79CD_uFF0C__u88AB_u5B9A_u4E49_u5728_Android__u4E2D_u7684_View__u7C7B_u7684_u4E00_u4E2A_u5185_u90E8_u7C7BView-MeasureSpec_u4E2D_uFF1A"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">模式一共有三种， 被定义在 Android 中的 View 类的一个内部类View.MeasureSpec中：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u5173_u4E8E_onMeasure_u4E2D_u7684_u53C2_u6570_28widthMeasureSpec_2C_heightMeasureSpec_29_u5728_u4E0D_u540C_u6A21_u5F0F_u4E0B_u662F_u8FD9_u6837_u7684_uFF1A"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">关于 onMeasure中的参数(widthMeasureSpec, heightMeasureSpec)在不同模式下是这样的：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6CE8_u610F_uFF1A"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">注意：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-_u786E_u5B9AView_u5927_u5C0F_28onSizeChanged_29"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.确定View大小(onSizeChanged)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q_3A__u5728_u6D4B_u91CF_u5B8CView_u5E76_u4F7F_u7528setMeasuredDimension_u51FD_u6570_u4E4B_u540EView_u7684_u5927_u5C0F_u57FA_u672C_u4E0A_u5DF2_u7ECF_u786E_u5B9A_u4E86_uFF0C_u90A3_u4E48_u4E3A_u4EC0_u4E48_u8FD8_u8981_u518D_u6B21_u786E_u5B9AView_u7684_u5927_u5C0F_u5462_uFF1F"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Q: 在测量完View并使用setMeasuredDimension函数之后View的大小基本上已经确定了，那么为什么还要再次确定View的大小呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#A_3A__u8FD9_u662F_u56E0_u4E3AView_u7684_u5927_u5C0F_u4E0D_u4EC5_u7531View_u672C_u8EAB_u63A7_u5236_uFF0C_u800C_u4E14_u53D7_u7236_u63A7_u4EF6_u7684_u5F71_u54CD_uFF0C_u6240_u4EE5_u6211_u4EEC_u5728_u786E_u5B9AView_u5927_u5C0F_u7684_u65F6_u5019_u6700_u597D_u4F7F_u7528_u7CFB_u7EDF_u63D0_u4F9B_u7684onSizeChanged_u56DE_u8C03_u51FD_u6570_u3002"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">A: 这是因为View的大小不仅由View本身控制，而且受父控件的影响，所以我们在确定View大小的时候最好使用系统提供的onSizeChanged回调函数。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-_u786E_u5B9A_u5B50View_u5E03_u5C40_u4F4D_u7F6E_28onLayout_29"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.确定子View布局位置(onLayout)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-_u7ED8_u5236_u5185_u5BB9_28onDraw_29"><span class="nav-number">1.2.5.</span> <span class="nav-text">5.绘制内容(onDraw)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-_u5BF9_u5916_u63D0_u4F9B_u64CD_u4F5C_u65B9_u6CD5_u548C_u76D1_u542C_u56DE_u8C03"><span class="nav-number">1.2.6.</span> <span class="nav-text">6.对外提供操作方法和监听回调</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E09-_u91CD_u70B9_u77E5_u8BC6_u68B3_u7406"><span class="nav-number">1.3.</span> <span class="nav-text">三.重点知识梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u81EA_u5B9A_u4E49View_u5206_u7C7B"><span class="nav-number">1.3.1.</span> <span class="nav-text">自定义View分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u81EA_u5B9A_u4E49View_u6D41_u7A0B_uFF1A"><span class="nav-number">1.3.2.</span> <span class="nav-text">自定义View流程：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u53C2_u8003_u8D44_u6599_uFF1A"><span class="nav-number">1.4.</span> <span class="nav-text">参考资料：</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -717,6 +651,167 @@
   
 
   
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   
 
