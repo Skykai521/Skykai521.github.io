@@ -352,3 +352,21 @@
 {"name":"hexo","hostname":"localhost","pid":5122,"level":20,"msg":"Rendering index: \u001b[35mindex.html\u001b[39m","time":"2016-01-22T07:29:38.508Z","v":0}
 {"name":"hexo","hostname":"localhost","pid":5122,"level":30,"msg":"Catch you later","time":"2016-01-22T07:29:54.913Z","v":0}
 {"name":"hexo","hostname":"localhost","pid":5122,"level":20,"msg":"Database saved","time":"2016-01-22T07:29:54.921Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Hexo version: \u001b[35m3.1.1\u001b[39m","time":"2016-01-25T01:19:13.739Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Working directory: \u001b[35m~/Desktop/github2/Skykai521.github.io/\u001b[39m","time":"2016-01-25T01:19:13.744Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Config loaded: \u001b[35m~/Desktop/github2/Skykai521.github.io/_config.yml\u001b[39m","time":"2016-01-25T01:19:13.834Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-archive\u001b[39m","time":"2016-01-25T01:19:13.848Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-deployer-git\u001b[39m","time":"2016-01-25T01:19:14.016Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-category\u001b[39m","time":"2016-01-25T01:19:14.018Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-index\u001b[39m","time":"2016-01-25T01:19:14.020Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-generator-tag\u001b[39m","time":"2016-01-25T01:19:14.022Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-ejs\u001b[39m","time":"2016-01-25T01:19:14.025Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-marked\u001b[39m","time":"2016-01-25T01:19:14.091Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-renderer-stylus\u001b[39m","time":"2016-01-25T01:19:14.197Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Plugin loaded: \u001b[35mhexo-server\u001b[39m","time":"2016-01-25T01:19:14.289Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Script loaded: \u001b[35mthemes/next/scripts/filters/sticky.js\u001b[39m","time":"2016-01-25T01:19:14.291Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Script loaded: \u001b[35mthemes/next/scripts/merge-configs.js\u001b[39m","time":"2016-01-25T01:19:14.292Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Script loaded: \u001b[35mthemes/next/scripts/tags/center-quote.js\u001b[39m","time":"2016-01-25T01:19:14.292Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Script loaded: \u001b[35mthemes/next/scripts/tags/full-image.js\u001b[39m","time":"2016-01-25T01:19:14.292Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Script loaded: \u001b[35mthemes/next/scripts/tags/group-pictures.js\u001b[39m","time":"2016-01-25T01:19:14.293Z","v":0}
+{"name":"hexo","hostname":"localhost","pid":833,"level":20,"msg":"Database saved","time":"2016-01-25T01:19:14.298Z","v":0}
