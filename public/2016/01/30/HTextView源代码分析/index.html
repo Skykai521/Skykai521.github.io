@@ -57,15 +57,20 @@
 
 
 
-<meta name="description" content="做自己喜欢的事儿,顺手改变世界">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Skykai">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="HTextView是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。
+使用方法HTextView的使用方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTextView源代码分析">
+<meta property="og:url" content="http://yoursite.com/2016/01/30/HTextView源代码分析/index.html">
 <meta property="og:site_name" content="Skykai">
-<meta property="og:description" content="做自己喜欢的事儿,顺手改变世界">
+<meta property="og:description" content="HTextView是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。
+使用方法HTextView的使用方">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/7909c3e7gw1f0gr0gba5vj20ra0fv74z.jpg">
+<meta property="og:updated_time" content="2016-01-30T08:17:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Skykai">
-<meta name="twitter:description" content="做自己喜欢的事儿,顺手改变世界">
+<meta name="twitter:title" content="HTextView源代码分析">
+<meta name="twitter:description" content="HTextView是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。
+使用方法HTextView的使用方">
 
 
 
@@ -83,7 +88,7 @@
   };
 </script>
 
-  <title> Skykai </title>
+  <title> HTextView源代码分析 | Skykai </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -109,9 +114,7 @@
   
   
 
-  <div class="container one-collumn  
-   page-home 
- ">
+  <div class="container one-collumn  page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -190,24 +193,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
 
+  <div id="posts" class="posts-expand">
     
-
-    
-    
-      
-      
-        
-        
-        
-      
-
-      
-    
-
-    
-      
 
   
   
@@ -227,10 +215,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/01/30/HTextView源代码分析/" itemprop="url">
-                  HTextView源代码分析
-                </a>
+                HTextView源代码分析
               
             
           </h1>
@@ -268,9 +253,7 @@
       
 
       
-        
-          
-            <p><a href="https://github.com/hanks-zyh/HTextView" target="_blank" rel="external">HTextView</a>是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。</p>
+        <p><a href="https://github.com/hanks-zyh/HTextView" target="_blank" rel="external">HTextView</a>是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。</p>
 <h3 id="u4F7F_u7528_u65B9_u6CD5"><a href="#u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="使用方法"></a>使用方法</h3><p>HTextView的使用方法还是比较简单的,只需要调用<code>hTextView.setAnimateType();</code>来设定一种动画的类型,再调用<code>hTextView.animateText();</code>将字符串传入就可以执行切换动画了,此外还提供了<code>hTextView.reset();</code>方法来重置动画,具体代码如下:</p>
 <pre><code>hTextView.setAnimateType(HTextViewType.SCALE);
 hTextView.animateText(sentences[mCounter]);
@@ -570,8 +553,6 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
 <h4 id="u6A21_u677F_u65B9_u6CD5"><a href="#u6A21_u677F_u65B9_u6CD5" class="headerlink" title="模板方法"></a>模板方法</h4><p><a href="https://github.com/simple-android-framework-exchange/android_design_patterns_analysis/tree/master/template-method/mr.simple" target="_blank" rel="external">模板方法(点击关于模板方法的详解)</a>定义一个操作中的算法的框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。模板方法在此库中的体现是<code>HText</code>这个抽象类定义的那四个抽象方法,分别在<code>HText</code>中进行调用,将这些步骤延迟到子类中执行,所以子类可以实现各种各样的动画效果,这是很典型的模板方法设计模式。</p>
 <h3 id="u4E2A_u4EBA_u8BC4_u4EF7"><a href="#u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="个人评价"></a>个人评价</h3><p>至此,我们就算是彻底了解了HTextView,虽然并没有多么复杂,但是它使用的这些典型的设计模式以及各种动画的实现确实可以从中让我们学到不少知识。尤其是各种动画的具体实现,能为我们自己在做相关动画时提供不少思路!</p>
 
-          
-        
       
     </div>
 
@@ -579,20 +560,32 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/28/Welcome-2016/" rel="next" title="Welcome 2016">
+                <i class="fa fa-chevron-left"></i> Welcome 2016
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
 
-  </section>
-
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -600,6 +593,10 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -619,8 +616,17 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://avatars0.githubusercontent.com/u/8402109?v=3&s=400"
@@ -685,6 +691,23 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528_u65B9_u6CD5"><span class="nav-number">1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u7C7B_u5173_u7CFB_u56FE"><span class="nav-number">2.</span> <span class="nav-text">类关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6E90_u7801_u5206_u6790"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8BBE_u8BA1_u6A21_u5F0F"><span class="nav-number">4.</span> <span class="nav-text">设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u7B56_u7565_u6A21_u5F0F"><span class="nav-number">4.1.</span> <span class="nav-text">策略模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u6A21_u677F_u65B9_u6CD5"><span class="nav-number">4.2.</span> <span class="nav-text">模板方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E2A_u4EBA_u8BC4_u4EF7"><span class="nav-number">5.</span> <span class="nav-text">个人评价</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -769,6 +792,167 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
   
 
   
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   
 
