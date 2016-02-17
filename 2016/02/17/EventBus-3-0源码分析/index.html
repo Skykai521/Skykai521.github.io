@@ -59,24 +59,20 @@
 
 <meta name="description" content="项目地址：EventBus，本文分析版本: 513f466
 
-1.使用方法2.类关系图
-3.源码分析4.设计模式5.个人评价">
+1.简介想必每个入了门的Android开发者都多少对EventBus有过了解,EventBus是一个Android事件发布/订阅框架，通过解耦发布者和订阅者简化 Android 事件传递。EventBus使用简单,并将事件发布和订阅充分解耦,从而使代码更简洁。一直以来很受开发者的欢迎,截止到目前EventBus的安装量已经超过一亿次。足">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EventBus3.0 源代码分析">
+<meta property="og:title" content="EventBus 3.0 源代码分析">
 <meta property="og:url" content="http://yoursite.com/2016/02/17/EventBus-3-0源码分析/index.html">
 <meta property="og:site_name" content="Skykai">
 <meta property="og:description" content="项目地址：EventBus，本文分析版本: 513f466
 
-1.使用方法2.类关系图
-3.源码分析4.设计模式5.个人评价">
-<meta property="og:image" content="http://yoursite.com/image/class-relation.png">
-<meta property="og:updated_time" content="2016-02-17T01:53:10.000Z">
+1.简介想必每个入了门的Android开发者都多少对EventBus有过了解,EventBus是一个Android事件发布/订阅框架，通过解耦发布者和订阅者简化 Android 事件传递。EventBus使用简单,并将事件发布和订阅充分解耦,从而使代码更简洁。一直以来很受开发者的欢迎,截止到目前EventBus的安装量已经超过一亿次。足">
+<meta property="og:updated_time" content="2016-02-17T07:54:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="EventBus3.0 源代码分析">
+<meta name="twitter:title" content="EventBus 3.0 源代码分析">
 <meta name="twitter:description" content="项目地址：EventBus，本文分析版本: 513f466
 
-1.使用方法2.类关系图
-3.源码分析4.设计模式5.个人评价">
+1.简介想必每个入了门的Android开发者都多少对EventBus有过了解,EventBus是一个Android事件发布/订阅框架，通过解耦发布者和订阅者简化 Android 事件传递。EventBus使用简单,并将事件发布和订阅充分解耦,从而使代码更简洁。一直以来很受开发者的欢迎,截止到目前EventBus的安装量已经超过一亿次。足">
 
 
 
@@ -94,7 +90,7 @@
   };
 </script>
 
-  <title> EventBus3.0 源代码分析 | Skykai </title>
+  <title> EventBus 3.0 源代码分析 | Skykai </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -221,7 +217,7 @@
             
             
               
-                EventBus3.0 源代码分析
+                EventBus 3.0 源代码分析
               
             
           </h1>
@@ -233,7 +229,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-17T09:53:10+08:00" content="2016-02-17">
+            <time itemprop="dateCreated" datetime="2016-02-17T15:54:52+08:00" content="2016-02-17">
               2016-02-17
             </time>
           </span>
@@ -262,8 +258,19 @@
         <blockquote>
 <p>项目地址：<a href="https://github.com/greenrobot/EventBus" target="_blank" rel="external">EventBus</a>，本文分析版本: <a href="https://github.com/greenrobot/EventBus/tree/513f466fee9eec849d4c6a900b7fc1bf6bdc8fba" target="_blank" rel="external">513f466</a></p>
 </blockquote>
-<h3 id="1-_u4F7F_u7528_u65B9_u6CD5"><a href="#1-_u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="1.使用方法"></a>1.使用方法</h3><h3 id="2-_u7C7B_u5173_u7CFB_u56FE"><a href="#2-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="2.类关系图"></a>2.类关系图</h3><p><img src="/image/class-relation.png" alt="类关系图"></p>
-<h3 id="3-_u6E90_u7801_u5206_u6790"><a href="#3-_u6E90_u7801_u5206_u6790" class="headerlink" title="3.源码分析"></a>3.源码分析</h3><h3 id="4-_u8BBE_u8BA1_u6A21_u5F0F"><a href="#4-_u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="4.设计模式"></a>4.设计模式</h3><h3 id="5-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#5-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="5.个人评价"></a>5.个人评价</h3>
+<h3 id="1-_u7B80_u4ECB"><a href="#1-_u7B80_u4ECB" class="headerlink" title="1.简介"></a>1.简介</h3><p>想必每个入了门的Android开发者都多少对EventBus有过了解,EventBus是一个Android事件发布/订阅框架，通过解耦发布者和订阅者简化 Android 事件传递。EventBus使用简单,并将事件发布和订阅充分解耦,从而使代码更简洁。一直以来很受开发者的欢迎,截止到目前EventBus的安装量已经超过一亿次。足以看出EventBus有多么的优秀。</p>
+<p>目前网上已经有不少优秀的EventBus的源码分析文章,我也一直在犹豫要不要再写一次,一方面是因为最近EventBus刚好更新了3.0版本,事件的订阅已经从方法名换成了注解的方式,而且整体还是有不少变化。另外一方面也是为了自己学习。毕竟写出来会有更深层次的理解。好了,下面让我们看看3.0版本EventBus的使用方法.</p>
+<h3 id="2-_u4F7F_u7528_u65B9_u6CD5"><a href="#2-_u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="2.使用方法"></a>2.使用方法</h3><h4 id="2-1_u6CE8_u518C_u8BA2_u9605_u8005"><a href="#2-1_u6CE8_u518C_u8BA2_u9605_u8005" class="headerlink" title="2.1注册订阅者"></a>2.1注册订阅者</h4><p>首先我们需要将我们希望订阅事件的类,通过EventBus类注册,注册代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//3.0&#29256;&#26412;&#30340;&#27880;&#20876;&#10;EventBus.getDefault().register(this);&#10;    &#10;//2.x&#29256;&#26412;&#30340;&#27880;&#20876;&#10;EventBus.getDefault().register(this);&#10;EventBus.getDefault().register(this, 100);&#10;EventBus.getDefault().registerSticky(this, 100);&#10;EventBus.getDefault().registerSticky(this);</span><br></pre></td></tr></table></figure>
+<p>可以看到2.x版本中有四种注册方法,区分了普通注册和粘性事件注册,并且在注册时可以选择接收事件的优先级,这里我们就不对2.x版本做过多的研究了,如果想研究可以参照<a href="http://kymjs.com/code/2015/12/12/01" target="_blank" rel="external">此篇文章</a>.由于3.0版本将粘性事件以及订阅事件的优先级换了一种更好的实现方式,所以3.0版本中的注册就变得简单,只有一个<code>register()</code>方法即可.</p>
+<h4 id="2-2_u7F16_u5199_u54CD_u5E94_u4E8B_u4EF6_u8BA2_u9605_u65B9_u6CD5"><a href="#2-2_u7F16_u5199_u54CD_u5E94_u4E8B_u4EF6_u8BA2_u9605_u65B9_u6CD5" class="headerlink" title="2.2编写响应事件订阅方法"></a>2.2编写响应事件订阅方法</h4><p>注册之后,我们需要编写响应事件的方法,代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//3.0&#29256;&#26412;&#10;@Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true, priority = 100)&#10;public void test(String str) &#123;&#10;    Log.d(TAG, Thread.currentThread().getId() + &#34; BACKGROUND&#34;);&#10;&#125;&#10;&#10;//2.x&#29256;&#26412;&#10;public void onEvent(String str) &#123;&#10;&#10;&#125;&#10;public void onEventMainThread(String str) &#123;&#10;&#10;&#125;&#10;public void onEventBackgroundThread(String str) &#123;&#10;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在2.x版本中只有通过onEvent开头的方法会被注册,而且响应事件方法触发的线程通过<code>onEventMainThread</code>或<code>onEventBackgroundThread</code>这些方法名区分,而在3.0版本中.通过<code>@Subscribe</code>注解,来确定运行的线程<code>threadMode</code>,是否接受粘性事件<code>sticky</code>以及事件优先级<code>priority</code>,而且方法名不在需要<code>onEvent</code>开头,所以又简洁灵活了不少.</p>
+<h4 id="2-3_u53D1_u9001_u4E8B_u4EF6"><a href="#2-3_u53D1_u9001_u4E8B_u4EF6" class="headerlink" title="2.3发送事件"></a>2.3发送事件</h4><p>我们可以通过<code>EventBus</code>的<code>post()</code>方法来发送事件,发送之后就会执行注册过这个事件的对应类的方法.或者通过<code>postSticky()</code>来发送一个粘性事件.在代码是2.x版本和3.0版本是一样的.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventBus.getDefault().post(&#34;str&#34;);&#10;EventBus.getDefault().postSticky(&#34;str&#34;);</span><br></pre></td></tr></table></figure>
+<h4 id="2-4_u89E3_u9664_u6CE8_u518C"><a href="#2-4_u89E3_u9664_u6CE8_u518C" class="headerlink" title="2.4解除注册"></a>2.4解除注册</h4><p>当我们不在需要接收事件的时候需要解除注册<code>unregister</code>,2.x和3.0的解除注册也是相同的.代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EventBus.getDefault().unregister(this);</span><br></pre></td></tr></table></figure>
+<h3 id="3-_u7C7B_u5173_u7CFB_u56FE"><a href="#3-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="3.类关系图"></a>3.类关系图</h3><h3 id="4-_u6E90_u7801_u5206_u6790"><a href="#4-_u6E90_u7801_u5206_u6790" class="headerlink" title="4.源码分析"></a>4.源码分析</h3><h3 id="5-_u8BBE_u8BA1_u6A21_u5F0F"><a href="#5-_u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="5.设计模式"></a>5.设计模式</h3><h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3>
       
     </div>
 
@@ -412,7 +419,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_u4F7F_u7528_u65B9_u6CD5"><span class="nav-number">1.</span> <span class="nav-text">1.使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_u7C7B_u5173_u7CFB_u56FE"><span class="nav-number">2.</span> <span class="nav-text">2.类关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-_u6E90_u7801_u5206_u6790"><span class="nav-number">3.</span> <span class="nav-text">3.源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-_u8BBE_u8BA1_u6A21_u5F0F"><span class="nav-number">4.</span> <span class="nav-text">4.设计模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-_u4E2A_u4EBA_u8BC4_u4EF7"><span class="nav-number">5.</span> <span class="nav-text">5.个人评价</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_u7B80_u4ECB"><span class="nav-number">1.</span> <span class="nav-text">1.简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_u4F7F_u7528_u65B9_u6CD5"><span class="nav-number">2.</span> <span class="nav-text">2.使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1_u6CE8_u518C_u8BA2_u9605_u8005"><span class="nav-number">2.1.</span> <span class="nav-text">2.1注册订阅者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2_u7F16_u5199_u54CD_u5E94_u4E8B_u4EF6_u8BA2_u9605_u65B9_u6CD5"><span class="nav-number">2.2.</span> <span class="nav-text">2.2编写响应事件订阅方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3_u53D1_u9001_u4E8B_u4EF6"><span class="nav-number">2.3.</span> <span class="nav-text">2.3发送事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4_u89E3_u9664_u6CE8_u518C"><span class="nav-number">2.4.</span> <span class="nav-text">2.4解除注册</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-_u7C7B_u5173_u7CFB_u56FE"><span class="nav-number">3.</span> <span class="nav-text">3.类关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-_u6E90_u7801_u5206_u6790"><span class="nav-number">4.</span> <span class="nav-text">4.源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-_u8BBE_u8BA1_u6A21_u5F0F"><span class="nav-number">5.</span> <span class="nav-text">5.设计模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-_u4E2A_u4EBA_u8BC4_u4EF7"><span class="nav-number">6.</span> <span class="nav-text">6.个人评价</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
