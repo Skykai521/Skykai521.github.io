@@ -228,7 +228,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/02/17/EventBus-3-0源码分析/" itemprop="url">
+                <a class="post-title-link" href="/2016/02/18/EventBus-3-0源码分析/" itemprop="url">
                   EventBus 3.0 源代码分析
                 </a>
               
@@ -242,14 +242,21 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-17T16:04:56+08:00" content="2016-02-17">
-              2016-02-17
+            <time itemprop="dateCreated" datetime="2016-02-18T16:47:04+08:00" content="2016-02-18">
+              2016-02-18
             </time>
           </span>
 
           
 
           
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/18/EventBus-3-0源码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/18/EventBus-3-0源码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
@@ -308,7 +315,72 @@ public void onEventBackgroundThread(String str) {
 EventBus.getDefault().postSticky(&quot;str&quot;);
 </code></pre><h4 id="2-4_u89E3_u9664_u6CE8_u518C"><a href="#2-4_u89E3_u9664_u6CE8_u518C" class="headerlink" title="2.4解除注册"></a>2.4解除注册</h4><p>当我们不在需要接收事件的时候需要解除注册<code>unregister</code>,2.x和3.0的解除注册也是相同的.代码如下:</p>
 <pre><code>EventBus.getDefault().unregister(this);
-</code></pre><h3 id="3-_u7C7B_u5173_u7CFB_u56FE"><a href="#3-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="3.类关系图"></a>3.类关系图</h3><h3 id="4-_u6E90_u7801_u5206_u6790"><a href="#4-_u6E90_u7801_u5206_u6790" class="headerlink" title="4.源码分析"></a>4.源码分析</h3><h3 id="5-_u8BBE_u8BA1_u6A21_u5F0F"><a href="#5-_u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="5.设计模式"></a>5.设计模式</h3><h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3>
+</code></pre><h3 id="3-_u7C7B_u5173_u7CFB_u56FE"><a href="#3-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="3.类关系图"></a>3.类关系图</h3><h3 id="4-_u6E90_u7801_u5206_u6790"><a href="#4-_u6E90_u7801_u5206_u6790" class="headerlink" title="4.源码分析"></a>4.源码分析</h3><p>这一节我们通过<code>EventBus</code>的使用流程来分析它的调用流程,通过我们熟悉的使用方法来深入到<code>EventBus</code>的实现内部并理解它的实现原理.</p>
+<h4 id="4-1_u521B_u5EFAEventBus"><a href="#4-1_u521B_u5EFAEventBus" class="headerlink" title="4.1创建EventBus"></a>4.1创建EventBus</h4><p>一般情况下我们都是通过<code>EventBus.getDefault()</code>获取到<code>EventBus</code>对象,从而在进行<code>register()</code>或者<code>post()</code>等等,所以我们看看<code>getDefault()</code>方法的实现:</p>
+<pre><code>public static EventBus getDefault() {
+    if (defaultInstance == null) {
+        synchronized (EventBus.class) {
+            if (defaultInstance == null) {
+                defaultInstance = new EventBus();
+            }
+        }
+    }
+    return defaultInstance;
+}
+</code></pre><p>这里就是设计模式里我们常用的<strong>单例模式</strong>了,目的是为了保证<code>getDefault()</code>得到的都是同一个实例。如果不存在实例,就调用了<code>EventBus</code>的构造方法:</p>
+<pre><code>private static final EventBusBuilder DEFAULT_BUILDER = new EventBusBuilder();
+
+public EventBus() {
+    this(DEFAULT_BUILDER);
+}
+
+EventBus(EventBusBuilder builder) {
+    //key:订阅的事件,value:订阅这个事件的所有订阅者集合
+    //private final Map&lt;Class&lt;?&gt;, CopyOnWriteArrayList&lt;Subscription&gt;&gt; subscriptionsByEventType;
+    subscriptionsByEventType = new HashMap&lt;&gt;();
+    //key:订阅者对象,value:这个订阅者订阅的事件集合
+    //private final Map&lt;Object, List&lt;Class&lt;?&gt;&gt;&gt; typesBySubscriber;
+    typesBySubscriber = new HashMap&lt;&gt;();
+    //粘性事件 key:粘性事件的class对象, value:事件对象
+    //private final Map&lt;Class&lt;?&gt;, Object&gt; stickyEvents;
+    stickyEvents = new ConcurrentHashMap&lt;&gt;();
+    //事件主线程处理
+    mainThreadPoster = new HandlerPoster(this, Looper.getMainLooper(), 10);
+    //事件 Background 处理
+    backgroundPoster = new BackgroundPoster(this);
+    //事件异步线程处理
+    asyncPoster = new AsyncPoster(this);
+    indexCount = builder.subscriberInfoIndexes != null ? builder.subscriberInfoIndexes.size() : 0;
+    //订阅者响应函数信息存储和查找类
+    subscriberMethodFinder = new SubscriberMethodFinder(builder.subscriberInfoIndexes,
+            builder.strictMethodVerification, builder.ignoreGeneratedIndex);
+    logSubscriberExceptions = builder.logSubscriberExceptions;
+    logNoSubscriberMessages = builder.logNoSubscriberMessages;
+    sendSubscriberExceptionEvent = builder.sendSubscriberExceptionEvent;
+    sendNoSubscriberEvent = builder.sendNoSubscriberEvent;
+    throwSubscriberException = builder.throwSubscriberException;
+    //是否支持事件继承
+    eventInheritance = builder.eventInheritance;
+    executorService = builder.executorService;
+}
+</code></pre><p>可以看出是通过初始化了一个<code>EventBusBuilder()</code>对象来分别初始化<code>EventBus</code>的一些配置,当我们在写一个需要自定义配置的框架的时候,这种实现方法非常普遍,将配置解耦出去,使我们的代码结构更清晰.注释里我标注了大部分比较重要的对象,这里没必要记住,看下面的文章时如果对某个对象不了解,可以再回来看看.</p>
+<h4 id="4-2_u6CE8_u518C_u8FC7_u7A0B_u6E90_u7801_u5206_u6790"><a href="#4-2_u6CE8_u518C_u8FC7_u7A0B_u6E90_u7801_u5206_u6790" class="headerlink" title="4.2注册过程源码分析"></a>4.2注册过程源码分析</h4><h5 id="4-2-1_register_28_29_u65B9_u6CD5_u7684_u5B9E_u73B0"><a href="#4-2-1_register_28_29_u65B9_u6CD5_u7684_u5B9E_u73B0" class="headerlink" title="4.2.1 register()方法的实现"></a>4.2.1 register()方法的实现</h5><p>3.0的注册只提供一个<code>register()</code>方法了,所以我们先来看看<code>register()</code>方法做了什么:</p>
+<pre><code>public void register(Object subscriber) {
+    //首先获得订阅者的class对象
+    Class&lt;?&gt; subscriberClass = subscriber.getClass();
+    //通过subscriberMethodFinder来找到订阅者订阅了哪些事件.返回一个SubscriberMethod对象的List,SubscriberMethod
+    //里包含了这个方法的Method对象,以及将来响应订阅是在哪个线程的ThreadMode,以及订阅的事件类型eventType,以及订阅的优
+    //先级priority,以及是否接收粘性sticky事件的boolean值.
+    List&lt;SubscriberMethod&gt; subscriberMethods = subscriberMethodFinder.findSubscriberMethods(subscriberClass);
+    synchronized (this) {
+        for (SubscriberMethod subscriberMethod : subscriberMethods) {
+            //订阅
+            subscribe(subscriber, subscriberMethod);
+        }
+    }
+}
+</code></pre><p>可以看到<code>register()</code>方法很简洁,代码里的注释也很清楚了,我们可以看出通过<code>subscriberMethodFinder.findSubscriberMethods(subscriberClass)</code>方法就能返回一个<code>SubscriberMethod</code>的对象,而<code>SubscriberMethod</code>里包含了所有我们需要的接下来执行<code>subscribe()</code>的信息.所以我们先去看看<code>findSubscriberMethods()</code>是怎么实现的,然后我们再去关注<code>subscribe()</code>。</p>
+<h5 id="4-2-2_SubscriberMethodFinder_u7684_u5B9E_u73B0"><a href="#4-2-2_SubscriberMethodFinder_u7684_u5B9E_u73B0" class="headerlink" title="4.2.2 SubscriberMethodFinder的实现"></a>4.2.2 SubscriberMethodFinder的实现</h5><h5 id="4-2-3_subscribe_28_29_u65B9_u6CD5_u7684_u5B9E_u73B0"><a href="#4-2-3_subscribe_28_29_u65B9_u6CD5_u7684_u5B9E_u73B0" class="headerlink" title="4.2.3 subscribe()方法的实现"></a>4.2.3 subscribe()方法的实现</h5><h4 id="4-3_u4E8B_u4EF6_u5206_u53D1_u8FC7_u7A0B_u6E90_u7801_u5206_u6790"><a href="#4-3_u4E8B_u4EF6_u5206_u53D1_u8FC7_u7A0B_u6E90_u7801_u5206_u6790" class="headerlink" title="4.3事件分发过程源码分析"></a>4.3事件分发过程源码分析</h4><h4 id="4-4_u89E3_u9664_u6CE8_u518C_u6E90_u7801_u5206_u6790"><a href="#4-4_u89E3_u9664_u6CE8_u518C_u6E90_u7801_u5206_u6790" class="headerlink" title="4.4解除注册源码分析"></a>4.4解除注册源码分析</h4><h3 id="5-_u8BBE_u8BA1_u6A21_u5F0F"><a href="#5-_u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="5.设计模式"></a>5.设计模式</h3><h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3>
           
         
       
@@ -518,9 +590,28 @@ EventBus.getDefault().postSticky(&quot;str&quot;);
 
   
 
+  
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skykai521"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
 
   
+    
+  
+
+
 
 
 

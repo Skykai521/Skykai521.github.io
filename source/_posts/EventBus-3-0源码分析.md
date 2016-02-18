@@ -13,50 +13,58 @@ title: EventBus 3.0 源代码分析
 #### 2.1注册订阅者
 首先我们需要将我们希望订阅事件的类,通过EventBus类注册,注册代码如下:
 
-
-	//3.0版本的注册
-	EventBus.getDefault().register(this);
+```java
+//3.0版本的注册
+EventBus.getDefault().register(this);
 	   
-    //2.x版本的注册
-    EventBus.getDefault().register(this);
-    EventBus.getDefault().register(this, 100);
-    EventBus.getDefault().registerSticky(this, 100);
-    EventBus.getDefault().registerSticky(this);
+//2.x版本的注册
+EventBus.getDefault().register(this);
+EventBus.getDefault().register(this, 100);
+EventBus.getDefault().registerSticky(this, 100);
+EventBus.getDefault().registerSticky(this);
+```
+
 
 可以看到2.x版本中有四种注册方法,区分了普通注册和粘性事件注册,并且在注册时可以选择接收事件的优先级,这里我们就不对2.x版本做过多的研究了,如果想研究可以参照[此篇文章](http://kymjs.com/code/2015/12/12/01).由于3.0版本将粘性事件以及订阅事件的优先级换了一种更好的实现方式,所以3.0版本中的注册就变得简单,只有一个`register()`方法即可.
 
 #### 2.2编写响应事件订阅方法
 注册之后,我们需要编写响应事件的方法,代码如下:
 
-	//3.0版本
-    @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true, priority = 100)
-    public void test(String str) {
+```java
+//3.0版本
+@Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true, priority = 100)
+public void test(String str) {
     
-    }
+}
 
-    //2.x版本
-    public void onEvent(String str) {
+//2.x版本
+public void onEvent(String str) {
 
-    }
-    public void onEventMainThread(String str) {
+}
+public void onEventMainThread(String str) {
 
-    }
-    public void onEventBackgroundThread(String str) {
+}
+public void onEventBackgroundThread(String str) {
 
-    }
+}
+```
+
 
 在2.x版本中只有通过onEvent开头的方法会被注册,而且响应事件方法触发的线程通过`onEventMainThread`或`onEventBackgroundThread`这些方法名区分,而在3.0版本中.通过`@Subscribe`注解,来确定运行的线程`threadMode`,是否接受粘性事件`sticky`以及事件优先级`priority`,而且方法名不在需要`onEvent`开头,所以又简洁灵活了不少.
 
 #### 2.3发送事件
 我们可以通过`EventBus`的`post()`方法来发送事件,发送之后就会执行注册过这个事件的对应类的方法.或者通过`postSticky()`来发送一个粘性事件.在代码是2.x版本和3.0版本是一样的.
 
-	EventBus.getDefault().post("str");
-    EventBus.getDefault().postSticky("str");
+```java
+EventBus.getDefault().post("str");
+EventBus.getDefault().postSticky("str");
+```
 
 #### 2.4解除注册
 当我们不在需要接收事件的时候需要解除注册`unregister`,2.x和3.0的解除注册也是相同的.代码如下:
-
-	EventBus.getDefault().unregister(this);
+```java
+EventBus.getDefault().unregister(this);
+```
 
 ### 3.类关系图
 
@@ -66,8 +74,8 @@ title: EventBus 3.0 源代码分析
 这一节我们通过`EventBus`的使用流程来分析它的调用流程,通过我们熟悉的使用方法来深入到`EventBus`的实现内部并理解它的实现原理.
 #### 4.1创建EventBus
 一般情况下我们都是通过`EventBus.getDefault()`获取到`EventBus`对象,从而在进行`register()`或者`post()`等等,所以我们看看`getDefault()`方法的实现:
-
-    public static EventBus getDefault() {
+```java
+	public static EventBus getDefault() {
         if (defaultInstance == null) {
             synchronized (EventBus.class) {
                 if (defaultInstance == null) {
@@ -77,8 +85,10 @@ title: EventBus 3.0 源代码分析
         }
         return defaultInstance;
     }
-这里就是设计模式里我们常用了**单例模式**了,为了保证`getDefault()`得到的都是同一个实例,然后调用了`EventBus`的构造方法:
+```
 
+这里就是设计模式里我们常用的**单例模式**了,目的是为了保证`getDefault()`得到的都是同一个实例。如果不存在实例,就调用了`EventBus`的构造方法:
+```java
 	private static final EventBusBuilder DEFAULT_BUILDER = new EventBusBuilder();
 	
     public EventBus() {
@@ -114,12 +124,14 @@ title: EventBus 3.0 源代码分析
         eventInheritance = builder.eventInheritance;
         executorService = builder.executorService;
     }
+```
+
 可以看出是通过初始化了一个`EventBusBuilder()`对象来分别初始化`EventBus`的一些配置,当我们在写一个需要自定义配置的框架的时候,这种实现方法非常普遍,将配置解耦出去,使我们的代码结构更清晰.注释里我标注了大部分比较重要的对象,这里没必要记住,看下面的文章时如果对某个对象不了解,可以再回来看看.
 
 #### 4.2注册过程源码分析
 ##### 4.2.1 register()方法的实现
 3.0的注册只提供一个`register()`方法了,所以我们先来看看`register()`方法做了什么:
-
+```java
     public void register(Object subscriber) {
         //首先获得订阅者的class对象
         Class<?> subscriberClass = subscriber.getClass();
@@ -134,6 +146,8 @@ title: EventBus 3.0 源代码分析
             }
         }
     }
+```
+
 可以看到`register()`方法很简洁,代码里的注释也很清楚了,我们可以看出通过`subscriberMethodFinder.findSubscriberMethods(subscriberClass)`方法就能返回一个`SubscriberMethod`的对象,而`SubscriberMethod`里包含了所有我们需要的接下来执行`subscribe()`的信息.所以我们先去看看`findSubscriberMethods()`是怎么实现的,然后我们再去关注`subscribe()`。
 ##### 4.2.2 SubscriberMethodFinder的实现
 
