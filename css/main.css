@@ -494,12 +494,12 @@ body {
 }
 pre,
 .highlight {
-  background: #1d1f21;
+  background: #000;
   margin: 20px 0;
   padding: 15px;
   overflow: auto;
   font-size: 13px;
-  color: #c5c8c6;
+  color: #eaeaea;
   line-height: 1.6;
 }
 .highlight .gutter pre,
@@ -564,7 +564,7 @@ pre code {
   border-style: solid;
   border-color: #ccc;
   border-width: 1px 0;
-  background: #1d1f21;
+  background: #000;
   padding: 15px 40px 15px 15px;
 }
 .gist .gist-file {
@@ -590,7 +590,7 @@ pre code {
   border: none;
 }
 .gist .gist-file .gist-meta {
-  background: #1d1f21;
+  background: #000;
   color: #969896;
   font: 13px Lato, "PingFang SC", "Microsoft YaHei", sans-serif;
   text-shadow: 0 0;
@@ -620,7 +620,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #c66;
+  color: #d54e53;
 }
 pre .number,
 pre .preprocessor,
@@ -628,11 +628,11 @@ pre .built_in,
 pre .literal,
 pre .params,
 pre .constant {
-  color: #de935f;
+  color: #e78c45;
 }
 pre .ruby .class .title,
 pre .css .rules .attribute {
-  color: #b5bd68;
+  color: #b9ca4a;
 }
 pre .string,
 pre .value,
@@ -640,11 +640,11 @@ pre .inheritance,
 pre .header,
 pre .ruby .symbol,
 pre .xml .cdata {
-  color: #b5bd68;
+  color: #b9ca4a;
 }
 pre .title,
 pre .css .hexcolor {
-  color: #8abeb7;
+  color: #70c0b1;
 }
 pre .function,
 pre .python .decorator,
@@ -654,11 +654,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #81a2be;
+  color: #7aa6da;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #b294bb;
+  color: #c397d8;
 }
 .full-image.full-image.full-image {
   border: none;
@@ -1543,7 +1543,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #5ec7ff;
+  background: #a842a7;
 }
 .sidebar-nav {
   margin: 0 0 20px;
