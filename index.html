@@ -242,7 +242,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-18T16:40:17+08:00" content="2016-02-18">
+            <time itemprop="dateCreated" datetime="2016-02-18T16:47:04+08:00" content="2016-02-18">
               2016-02-18
             </time>
           </span>
@@ -320,7 +320,7 @@ EventBus.getDefault().postSticky(&quot;str&quot;);
     }
     return defaultInstance;
 }
-</code></pre><p>这里就是设计模式里我们常用了<strong>单例模式</strong>了,为了保证<code>getDefault()</code>得到的都是同一个实例,然后调用了<code>EventBus</code>的构造方法:</p>
+</code></pre><p>这里就是设计模式里我们常用的<strong>单例模式</strong>了,目的是为了保证<code>getDefault()</code>得到的都是同一个实例。如果不存在实例,就调用了<code>EventBus</code>的构造方法:</p>
 <pre><code>private static final EventBusBuilder DEFAULT_BUILDER = new EventBusBuilder();
 
 public EventBus() {
