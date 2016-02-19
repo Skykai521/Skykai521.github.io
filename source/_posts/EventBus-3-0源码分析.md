@@ -70,6 +70,10 @@ EventBus.getDefault().unregister(this);
 
 ![eventbus img](image/class-relation.png)
 
+类关系图我直接引用了[CodeKK的EventBus源代码分析](http://a.codekk.com/detail/Android/Trinea/EventBus%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90),
+虽然更新了3.0,但是整体上的设计还是可以用上面的类图来分析,从类图上我们可以看到大部分类都是依赖于EventBus的,上部分主要是订阅者相关信息，中间是 EventBus 类，
+下面是发布者发布事件后的调用。下面我们来进行源码分析.
+
 ### 4.源码分析
 
 这一节我们通过`EventBus`的使用流程来分析它的调用流程,通过我们熟悉的使用方法来深入到`EventBus`的实现内部并理解它的实现原理.
@@ -193,7 +197,7 @@ public class MyEventBusIndex implements SubscriberInfoIndex {
 }
 ```
 
-可以看出是使用一个静态`HashMap`即:`SUBSCRIBER_INDEX`来保存订阅类的信息,其中包括了订阅类的class对象,是否需要检查父类,以及订阅方法的信息`SubscriberMethodInfo`的数组,`SubscriberMethodInfo`中又保存了,订阅方法的方法名,订阅的事件类型,触发线程,是否接收sticky事件以及优先级priority.这其中就保存了`register()`的所有需要的信息,如果再配置`EventBus`的时候通过`EventBusBuilder`配置:`eventBus = EventBus.builder().addIndex(new SkyEventBusIndex()).build();`来将编译生成的`SkyEventBusIndex`配置进去,这样就能在`SubscriberMethodFinder`类中直接查找出订阅类的信息,就不需要再利用注解判断了,当然这种方法是作为`EventBus`的可选配置,`SubscriberMethodFinder`同样提供了通过注解来获得订阅类信息的方法,下面我们就来看`findSubscriberMethods()`到底是如何实现的:
+可以看出是使用一个静态`HashMap`即:`SUBSCRIBER_INDEX`来保存订阅类的信息,其中包括了订阅类的class对象,是否需要检查父类,以及订阅方法的信息`SubscriberMethodInfo`的数组,`SubscriberMethodInfo`中又保存了,订阅方法的方法名,订阅的事件类型,触发线程,是否接收sticky事件以及优先级priority.这其中就保存了`register()`的所有需要的信息,如果再配置`EventBus`的时候通过`EventBusBuilder`配置:`eventBus = EventBus.builder().addIndex(new MyEventBusIndex()).build();`来将编译生成的`MyEventBusIndex`配置进去,这样就能在`SubscriberMethodFinder`类中直接查找出订阅类的信息,就不需要再利用注解判断了,当然这种方法是作为`EventBus`的可选配置,`SubscriberMethodFinder`同样提供了通过注解来获得订阅类信息的方法,下面我们就来看`findSubscriberMethods()`到底是如何实现的:
 
 ```java
     List<SubscriberMethod> findSubscriberMethods(Class<?> subscriberClass) {
@@ -353,8 +357,169 @@ public class MyEventBusIndex implements SubscriberInfoIndex {
 
 通过第二节我们知道可以通过`EventBus.getDefault().post("str");`来发送一个事件,所以我们就从这行代码开始分析,首先看看`post()`方法是如何实现的:
 
+```java
+    public void post(Object event) {
+        //得到当前线程的Posting状态.
+        PostingThreadState postingState = currentPostingThreadState.get();
+        //获取当前线程的事件队列
+        List<Object> eventQueue = postingState.eventQueue;
+        eventQueue.add(event);
 
+        if (!postingState.isPosting) {
+            postingState.isMainThread = Looper.getMainLooper() == Looper.myLooper();
+            postingState.isPosting = true;
+            if (postingState.canceled) {
+                throw new EventBusException("Internal error. Abort state was not reset");
+            }
+            try {
+                //一直发送
+                while (!eventQueue.isEmpty()) {
+                    //发送单个事件
+                    postSingleEvent(eventQueue.remove(0), postingState);
+                }
+            } finally {
+                postingState.isPosting = false;
+                postingState.isMainThread = false;
+            }
+        }
+    }
+```
 
+首先是通过`currentPostingThreadState.get()`方法来得到当前线程`PostingThreadState`的对象,为什么是说当前线程我们来看看`currentPostingThreadState`的实现:
+
+```java
+    private final ThreadLocal<PostingThreadState> currentPostingThreadState = new ThreadLocal<PostingThreadState>() {
+        @Override
+        protected PostingThreadState initialValue() {
+            return new PostingThreadState();
+        }
+    };
+
+```
+
+`currentPostingThreadState`的实现是一个包含了`PostingThreadState`的`ThreadLocal`对象,关于`ThreadLocal`
+[张涛的这篇文章解释的很好](http://kymjs.com/code/2015/12/16/01):ThreadLocal 是一个线程内部的数据存储类，通过它可以在指定的线程中存储数据，
+而这段数据是不会与其他线程共享的。其内部原理是通过生成一个它包裹的泛型对象的数组，在不同的线程会有不同的数组索引值，通过这样就可以做到每个线程通过 
+get() 方法获取的时候，取到的只能是自己线程所对应的数据。 所以这里取到的就是每个线程的`PostingThreadState`状态.接下来我们来看`postSingleEvent()`
+方法:
+
+```java
+    private void postSingleEvent(Object event, PostingThreadState postingState) throws Error {
+        Class<?> eventClass = event.getClass();
+        boolean subscriptionFound = false;
+        //是否触发订阅了该事件(eventClass)的父类,以及接口的类的响应方法.
+        if (eventInheritance) {
+            //查找eventClass类所有的父类以及接口
+            List<Class<?>> eventTypes = lookupAllEventTypes(eventClass);
+            int countTypes = eventTypes.size();
+            //循环postSingleEventForEventType
+            for (int h = 0; h < countTypes; h++) {
+                Class<?> clazz = eventTypes.get(h);
+                //只要右边有一个为true,subscriptionFound就为true
+                subscriptionFound |= postSingleEventForEventType(event, postingState, clazz);
+            }
+        } else {
+            //post单个
+            subscriptionFound = postSingleEventForEventType(event, postingState, eventClass);
+        }
+        //如果没发现
+        if (!subscriptionFound) {
+            if (logNoSubscriberMessages) {
+                Log.d(TAG, "No subscribers registered for event " + eventClass);
+            }
+            if (sendNoSubscriberEvent && eventClass != NoSubscriberEvent.class &&
+                    eventClass != SubscriberExceptionEvent.class) {
+                //发送一个NoSubscriberEvent事件,如果我们需要处理这种状态,接收这个事件就可以了
+                post(new NoSubscriberEvent(this, event));
+            }
+        }
+    }
+```
+跟着上面的代码的注释,我们可以很清楚的发现是在`postSingleEventForEventType()`方法里去进行事件的分发,代码如下:
+
+```java
+    private boolean postSingleEventForEventType(Object event, PostingThreadState postingState, Class<?> eventClass) {
+        CopyOnWriteArrayList<Subscription> subscriptions;
+        //获取订阅了这个事件的Subscription列表.
+        synchronized (this) {
+            subscriptions = subscriptionsByEventType.get(eventClass);
+        }
+        if (subscriptions != null && !subscriptions.isEmpty()) {
+            for (Subscription subscription : subscriptions) {
+                postingState.event = event;
+                postingState.subscription = subscription;
+                //是否被中断
+                boolean aborted = false;
+                try {
+                    //分发给订阅者
+                    postToSubscription(subscription, event, postingState.isMainThread);
+                    aborted = postingState.canceled;
+                } finally {
+                    postingState.event = null;
+                    postingState.subscription = null;
+                    postingState.canceled = false;
+                }
+                if (aborted) {
+                    break;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void postToSubscription(Subscription subscription, Object event, boolean isMainThread) {
+        switch (subscription.subscriberMethod.threadMode) {
+            case POSTING:
+                invokeSubscriber(subscription, event);
+                break;
+            case MAIN:
+                if (isMainThread) {
+                    invokeSubscriber(subscription, event);
+                } else {
+                    mainThreadPoster.enqueue(subscription, event);
+                }
+                break;
+            case BACKGROUND:
+                if (isMainThread) {
+                    backgroundPoster.enqueue(subscription, event);
+                } else {
+                    invokeSubscriber(subscription, event);
+                }
+                break;
+            case ASYNC:
+                asyncPoster.enqueue(subscription, event);
+                break;
+            default:
+                throw new IllegalStateException("Unknown thread mode: " + subscription.subscriberMethod.threadMode);
+        }
+    }
+```
+
+总结上面的代码就是,首先从`subscriptionsByEventType`里获得所有订阅了这个事件的`Subscription`列表,然后在通过`postToSubscription()`方法来分发
+事件,在`postToSubscription()`通过不同的`threadMode`在不同的线程里`invoke()`订阅者的方法,`ThreadMode`共有四类:
+1. `PostThread`：默认的 ThreadMode，表示在执行 Post 操作的线程直接调用订阅者的事件响应方法，不论该线程是否为主线程（UI 线程）。当该线程为主线程时，响应方法中不能有耗时操作，否则有卡主线程的风险。适用场景：**对于是否在主线程执行无要求，但若 Post 线程为主线程，不能耗时的操作**；  
+2. `MainThread`：在主线程中执行响应方法。如果发布线程就是主线程，则直接调用订阅者的事件响应方法，否则通过主线程的 Handler 发送消息在主线程中处理——调用订阅者的事件响应函数。显然，`MainThread`类的方法也不能有耗时操作，以避免卡主线程。适用场景：**必须在主线程执行的操作**；  
+3. `BackgroundThread`：在后台线程中执行响应方法。如果发布线程**不是**主线程，则直接调用订阅者的事件响应函数，否则启动**唯一的**后台线程去处理。由于后台线程是唯一的，当事件超过一个的时候，它们会被放在队列中依次执行，因此该类响应方法虽然没有`PostThread`类和`MainThread`类方法对性能敏感，但最好不要有重度耗时的操作或太频繁的轻度耗时操作，以造成其他操作等待。适用场景：*操作轻微耗时且不会过于频繁*，即一般的耗时操作都可以放在这里；  
+4. `Async`：不论发布线程是否为主线程，都使用一个空闲线程来处理。和`BackgroundThread`不同的是，`Async`类的所有线程是相互独立的，因此不会出现卡线程的问题。适用场景：*长耗时操作，例如网络访问*。  
+[引用自](http://a.codekk.com/detail/Android/Trinea/EventBus%20%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90)
+
+这里我们只来看看`invokeSubscriber(subscription, event);`是如何实现的,关于不同线程的`Poster`的使用可以参考[这篇文章](http://kymjs.com/code/2015/12/12/01)
+以及上面codekk的文章.`invokeSubscriber(subscription, event);`代码如下:
+
+```java
+    void invokeSubscriber(Subscription subscription, Object event) {
+        try {
+            subscription.subscriberMethod.method.invoke(subscription.subscriber, event);
+        } catch (InvocationTargetException e) {
+            handleSubscriberException(subscription, event, e.getCause());
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException("Unexpected exception", e);
+        }
+    }
+```
+实际上就是通过反射调用了订阅者的订阅函数并把`event`对象作为参数传入.至此`post()`流程就结束了,整体流程图如下:
+![eventbus img](image/post-flow-chart.png)
 
 #### 4.4解除注册源码分析
 看完了上面的分析,解除注册就相对容易了,解除注册只要调用`unregister()`方法即可,实现如下:
@@ -399,6 +564,7 @@ public class MyEventBusIndex implements SubscriberInfoIndex {
 最终分别从`typesBySubscriber`和`subscriptions`里分别移除订阅者以及相关信息即可.
 
 ### 5.设计模式
+
 
 ### 6.个人评价
 
