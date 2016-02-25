@@ -228,7 +228,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/02/19/EventBus-3-0源码分析/" itemprop="url">
+                <a class="post-title-link" href="/2016/02/20/EventBus-3-0源码分析/" itemprop="url">
                   EventBus 3.0 源代码分析
                 </a>
               
@@ -242,8 +242,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-19T16:45:55+08:00" content="2016-02-19">
-              2016-02-19
+            <time itemprop="dateCreated" datetime="2016-02-20T15:19:30+08:00" content="2016-02-20">
+              2016-02-20
             </time>
           </span>
 
@@ -253,8 +253,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/02/19/EventBus-3-0源码分析/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/19/EventBus-3-0源码分析/" itemprop="commentsCount"></span>
+                <a href="/2016/02/20/EventBus-3-0源码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/20/EventBus-3-0源码分析/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -330,7 +330,9 @@
 <h4 id="4-4_u89E3_u9664_u6CE8_u518C_u6E90_u7801_u5206_u6790"><a href="#4-4_u89E3_u9664_u6CE8_u518C_u6E90_u7801_u5206_u6790" class="headerlink" title="4.4解除注册源码分析"></a>4.4解除注册源码分析</h4><p>看完了上面的分析,解除注册就相对容易了,解除注册只要调用<code>unregister()</code>方法即可,实现如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">unregister</span><span class="params">(Object subscriber)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//通过typesBySubscriber来取出这个subscriber订阅者订阅的事件类型,</span></span><br><span class="line">    List&lt;Class&lt;?&gt;&gt; subscribedTypes = typesBySubscriber.get(subscriber);</span><br><span class="line">    <span class="keyword">if</span> (subscribedTypes != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">//分别解除每个订阅了的事件类型</span></span><br><span class="line">        <span class="keyword">for</span> (Class&lt;?&gt; eventType : subscribedTypes) &#123;</span><br><span class="line">            unsubscribeByEventType(subscriber, eventType);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从typesBySubscriber移除subscriber</span></span><br><span class="line">        typesBySubscriber.remove(subscriber);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">"Subscriber to unregister was not registered before: "</span> + subscriber.getClass());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>然后接着看<code>unsubscribeByEventType()</code>方法的实现:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unsubscribeByEventType</span><span class="params">(Object subscriber, Class&lt;?&gt; eventType)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//subscriptionsByEventType里拿出这个事件类型的订阅者列表.</span></span><br><span class="line">    List&lt;Subscription&gt; subscriptions = subscriptionsByEventType.get(eventType);</span><br><span class="line">    <span class="keyword">if</span> (subscriptions != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> size = subscriptions.size();</span><br><span class="line">        <span class="comment">//取消订阅</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            Subscription subscription = subscriptions.get(i);</span><br><span class="line">            <span class="keyword">if</span> (subscription.subscriber == subscriber) &#123;</span><br><span class="line">                subscription.active = <span class="keyword">false</span>;</span><br><span class="line">                subscriptions.remove(i);</span><br><span class="line">                i--;</span><br><span class="line">                size--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>最终分别从<code>typesBySubscriber</code>和<code>subscriptions</code>里分别移除订阅者以及相关信息即可.</p>
-<h3 id="5-_u8BBE_u8BA1_u6A21_u5F0F"><a href="#5-_u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="5.设计模式"></a>5.设计模式</h3><h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3>
+<h3 id="5-_u8BBE_u8BA1_u6A21_u5F0F"><a href="#5-_u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="5.设计模式"></a>5.设计模式</h3><h4 id="u89C2_u5BDF_u8005_u6A21_u5F0F"><a href="#u89C2_u5BDF_u8005_u6A21_u5F0F" class="headerlink" title="观察者模式"></a>观察者模式</h4><p><a href="http://www.cnblogs.com/java-my-life/archive/2012/05/16/2502279.html" target="_blank" rel="external">观察者模式</a>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。<code>EventBus</code>并不是标准的观察者模式的实现,但是它的整体就是一个发布/订阅框架,也拥有观察者模式的优点,比如:发布者和订阅者的解耦.</p>
+<h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3><p><code>EventBus</code>不论从使用方式和实现方式上都是非常值得我们学习的开源项目,我参与的一些项目里都是广泛的使用<code>EventBus</code>做消息的通知,可以说是目前消息通知里最好用<br>的项目.但是业内对<code>EventBus</code>的主要争论点是在于<code>EventBus</code>使用反射会出现性能问题,关于反射的性能问题可以参考<a href="http://www.cnblogs.com/zhishan/p/3195771.html" target="_blank" rel="external">这篇文章</a>,<br>实际上在<code>EventBus</code>里我们可以看到不仅可以使用注解处理器预处理获取订阅信息,<code>EventBus</code>也会将订阅者的方法缓存到<code>METHOD_CACHE</code>里避免重复查找,所以只有在最后<br><code>invoke()</code>方法的时候会比直接调用多出一些性能损耗,但是这些对于我们移动端来说是完全可以忽略的.所以盲目的说因为性能问题而觉得<code>EventBus</code>不值得使用显然是不<br>负责任的.在2.x版本里<code>EventBus</code>写出的代码可读性不是太好因为所有订阅方法都是<code>onEvent</code>开头,这样就使代码的可读性降低不少,但是3.0之后我们就不用担心这些了,因为<br>方法名已经不再需要<code>onEvent</code>开头了。所以总体上来说<code>EventBus</code>还是值得我们在项目中使用的。</p>
+
           
         
       
