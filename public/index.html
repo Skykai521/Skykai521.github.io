@@ -196,15 +196,96 @@
 
     
     
+
+    
       
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/25/Picasso源代码分析/" itemprop="url">
+                  Picasso源代码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-25T09:23:03+08:00" content="2016-02-25">
+              2016-02-25
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/25/Picasso源代码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/25/Picasso源代码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        
-        
-        
       
 
       
-    
+        
+          
+            <h3 id="1-_u7B80_u4ECB"><a href="#1-_u7B80_u4ECB" class="headerlink" title="1.简介"></a>1.简介</h3><h3 id="2-_u4F7F_u7528_u65B9_u6CD5"><a href="#2-_u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="2.使用方法"></a>2.使用方法</h3><h3 id="3-_u7C7B_u5173_u7CFB_u56FE"><a href="#3-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="3.类关系图"></a>3.类关系图</h3><h3 id="4-_u6E90_u7801_u5206_u6790"><a href="#4-_u6E90_u7801_u5206_u6790" class="headerlink" title="4.源码分析"></a>4.源码分析</h3><h3 id="5-_u8BBE_u8BA1_u6A21_u5F0F"><a href="#5-_u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="5.设计模式"></a>5.设计模式</h3><h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -352,6 +433,512 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/30/HTextView源代码分析/" itemprop="url">
+                  HTextView源代码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-30T16:17:07+08:00" content="2016-01-30">
+              2016-01-30
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/30/HTextView源代码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/30/HTextView源代码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/hanks-zyh/HTextView" target="_blank" rel="external">HTextView</a>是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。</p>
+<h3 id="u4F7F_u7528_u65B9_u6CD5"><a href="#u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="使用方法"></a>使用方法</h3><p>HTextView的使用方法还是比较简单的,只需要调用<code>hTextView.setAnimateType();</code>来设定一种动画的类型,再调用<code>hTextView.animateText();</code>将字符串传入就可以执行切换动画了,此外还提供了<code>hTextView.reset();</code>方法来重置动画,具体代码如下:</p>
+<pre><code>hTextView.setAnimateType(HTextViewType.SCALE);
+hTextView.animateText(sentences[mCounter]);
+</code></pre><h3 id="u7C7B_u5173_u7CFB_u56FE"><a href="#u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="类关系图"></a>类关系图</h3><p><img src="http://ww2.sinaimg.cn/mw690/7909c3e7gw1f0gr0gba5vj20ra0fv74z.jpg" alt=""></p>
+<p>当我们去分析一个项目的时候,首先看这个类库的UML类图往往是最直观的,能很清晰的将各个类的关系用图的形式展示的很清楚,这里我是使用的Android Studio的插件<a href="https://plugins.jetbrains.com/plugin/4946?pr=" target="_blank" rel="external">simpleUMLCE</a>来自动生成的类图,非常方便推荐给大家,另外如果看不懂UML图可以参照<a href="http://blog.csdn.net/lovelion/article/details/7838679" target="_blank" rel="external">深入浅出UML类图系列</a>,已经讲得很详细我就不再补充了。</p>
+<p>从类图上看我们可以很清晰的看出,首先是定义了一个<code>IHText</code>的接口,然后<code>HText</code>实现了<code>IHText</code>的接口,然后左边的那么多类,可以从名字上大致猜出是各种动画的具体实现他们都是继承了HText类,值得一提的是<code>PixelateText</code>和<code>BurnText</code>是直接实现<code>IHText</code>的,我猜测应该是作者后期重构代码的时候忘记这两个类了,实际上这两个类也是可以继承自<code>HText</code>来实现.最后可以看出<code>IHText</code>是和<code>HTextView</code>相互耦合的.好的,类图就讲到这里,下面我们来看具体实现.</p>
+<h3 id="u6E90_u7801_u5206_u6790"><a href="#u6E90_u7801_u5206_u6790" class="headerlink" title="源码分析"></a>源码分析</h3><p>在开始分析一个开源项目的时候,我们往往先从其定义的接口来看,所以我们先看<code>IHText</code>接口是如何定义的:</p>
+<pre><code>public interface IHText {
+    void init(HTextView hTextView, AttributeSet attrs, int defStyle);
+    void animateText(CharSequence text);
+    void onDraw(Canvas canvas);
+    void reset(CharSequence text);
+}
+</code></pre><p>首先<code>init()</code>方法,顾名思义应该是进行一些初始化的操作,<code>annimateText</code>应该就是让文字开始做动画的方法,<code>onDraw</code>这个大家应该都很熟悉了,因为做动画,实际上就是一帧一帧的绘制然后来组成动画,所以<code>onDraw</code>方法也是必须的.最后一个<code>reset</code>应该就是重置文字以及一些状态等等.</p>
+<p>看完了接口定义,不用着急,接下来我们去看<code>HTextView</code>,精简后的代码如下:</p>
+<pre><code>public class HTextView extends TextView {
+    private IHText mIHText = new ScaleText();
+    private AttributeSet attrs;
+    private int defStyle;
+
+    public HTextView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(attrs, defStyle);
+    }
+
+    private void init(AttributeSet attrs, int defStyle) {
+        this.attrs = attrs;
+        this.defStyle = defStyle;
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.HTextView);
+        int animateType = typedArray.getInt(R.styleable.HTextView_animateType, 0);
+        switch (animateType) {
+            case 0:
+                mIHText = new ScaleText();
+                break;
+            case 1:
+                mIHText = new EvaporateText();
+                break;
+            case 2:
+                mIHText = new FallText();
+                break;
+        }
+        typedArray.recycle();
+        initHText(attrs, defStyle);
+    }
+
+    private void initHText(AttributeSet attrs, int defStyle) {
+        mIHText.init(this, attrs, defStyle);
+    }
+
+    public void animateText(CharSequence text) {
+        mIHText.animateText(text);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        mIHText.onDraw(canvas);
+    }
+
+    public void reset(CharSequence text) {
+        mIHText.reset(text);
+    }
+
+    public void setAnimateType(HTextViewType type) {
+        switch (type) {
+            case SCALE:
+                mIHText = new ScaleText();
+                break;
+            case EVAPORATE:
+                mIHText = new EvaporateText();
+                break;
+            case FALL:
+                mIHText = new FallText();
+                break;
+        }
+        initHText(attrs, defStyle);
+    }
+}
+</code></pre><p>从代码中可以看出<code>HTextView</code>继承自TextView,并在初始化的时候根据<code>animateType</code>来实例化对应的<code>IHText</code>,然后再对外暴露的<code>animateText()</code>,<code>onDraw()</code>,<code>reset()</code>这几个方法里都是直接调用<code>IHText</code>来进行处理.值得一提的是<code>HTextView</code>重写了<code>onDraw</code>方法,这样也就意味着一些<code>TextView</code>的特性就没法使用了,比如添加drawable,换行等等..</p>
+<p>看到这里我们知道了原来就是通过type来实例化对应的动画执行类,然后再做具体的处理.其实这里就是设计模式中的<strong>策略模式</strong>,我们先引出来,文章后面我们再介绍策略模式.这样我们只需要去找一个实例去具体分析它的实现就能明白整个库的原理了,这里我们就拿<code>ScaleText</code>类来分析具体动画的实现方式.去到<code>ScaleText</code>里发现它继承自<code>HText</code>类的,所以我们先来看看<code>HText</code>类的代码:</p>
+<pre><code>public abstract class HText implements IHText {
+    protected Paint mPaint, mOldPaint;
+    protected float[] gaps = new float[100];
+    protected float[] oldGaps = new float[100];
+    protected float mTextSize;
+    protected CharSequence mText;
+    protected CharSequence mOldText;
+    protected List&lt;CharacterDiffResult&gt; differentList = new ArrayList&lt;&gt;();
+    protected float oldStartX = 0; // 原来的字符串开始画的x位置
+    protected float startX = 0; // 新的字符串开始画的x位置
+    protected float startY = 0; // 字符串开始画的y, baseline
+    protected HTextView mHTextView;
+
+    @Override
+    public void init(HTextView hTextView, AttributeSet attrs, int defStyle){
+
+        mHTextView = hTextView;
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setColor(mHTextView.getCurrentTextColor());
+        mPaint.setStyle(Paint.Style.FILL);
+
+        mOldPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mOldPaint.setColor(mHTextView.getCurrentTextColor());
+        mOldPaint.setStyle(Paint.Style.FILL);
+
+        mText = mHTextView.getText();
+        mOldText = mHTextView.getText();
+
+        mTextSize = mHTextView.getTextSize();
+
+        initVariables();
+        mHTextView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                prepareAnimate();
+            }
+        }, 50);
+
+    }
+
+    @Override
+    public void animateText(CharSequence text) {
+        mHTextView.setText(text);
+        mOldText = mText;
+        mText = text;
+        prepareAnimate();
+        animatePrepare(text);
+        animateStart(text);
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
+        drawFrame(canvas);
+    }
+
+    private void prepareAnimate() {
+        mTextSize = mHTextView.getTextSize();
+
+        mPaint.setTextSize(mTextSize);
+        for (int i = 0; i &lt; mText.length(); i++) {
+            gaps[i] = mPaint.measureText(mText.charAt(i) + &quot;&quot;);
+        }
+
+        mOldPaint.setTextSize(mTextSize);
+        for (int i = 0; i &lt; mOldText.length(); i++) {
+            oldGaps[i] = mOldPaint.measureText(mOldText.charAt(i) + &quot;&quot;);
+        }
+
+        oldStartX = (mHTextView.getMeasuredWidth() - mHTextView.getCompoundPaddingLeft() - mHTextView.getPaddingLeft() - mOldPaint
+                .measureText(mOldText.toString())) / 2f;
+        startX = (mHTextView.getMeasuredWidth() - mHTextView.getCompoundPaddingLeft() - mHTextView.getPaddingLeft() - mPaint
+                .measureText(mText.toString())) / 2f;
+        startY = mHTextView.getBaseline();
+
+        differentList.clear();
+        differentList.addAll(CharacterUtils.diff(mOldText, mText));
+    }
+
+    public void reset(CharSequence text) {
+        animatePrepare(text);
+        mHTextView.invalidate();
+    }
+
+    /**
+     * 类被实例化时初始化
+     */
+    protected abstract void initVariables();
+
+    /**
+     * 具体实现动画
+     *
+     * @param text
+     */
+    protected abstract void animateStart(CharSequence text);
+
+    /**
+     * 每次动画前初始化调用
+     *
+     * @param text
+     */
+    protected abstract void animatePrepare(CharSequence text);
+
+    /**
+     * 动画每次刷新界面时调用
+     *
+     * @param canvas
+     */
+    protected abstract void drawFrame(Canvas canvas);
+}
+</code></pre><p>首先<code>HText</code>是一个抽象类,并且在初始化的时候,分别初始化了需要画旧的文字和新的文字的画笔,以及对新旧文字的赋值,最后调用了<code>prepareAnimate();</code>方法.在这个方法里,首先设置了两种<code>Paint</code>的<code>TextSize</code>,然后计算了每一个文字的宽度并保存在了<code>gaps</code>和<code>oldGaps</code>两个数组里,最后计算了<code>mOldText</code>和<code>mText</code>里相同字符的位置信息.这里主要是为了做到当两组<code>Text</code>中有相同字符时就不执行默认动画,而进行字符的平移动画,使动画更灵动.</p>
+<p>看完初始化方法以及<code>prepareAnimate();</code>之后,我们留意到类的最后的四个抽象方法.这里作者注释的比较清楚了,就不再过多解释,这里我们就能明白不论是<code>ScaleText</code>类还是其他动画类型的类,实际上都是实现了这些方法,然后<code>HText</code>中对这些方法进行了调用,从而会执行子类中的相应实现然后来实现具体的某个动画,实际上这里就是设计模式中的<strong>模板方法</strong>.这里同样先不多说,文章最后会做总结.</p>
+<p>然后我们再具体看这四个抽象方法分别是在哪里被调用的,我们就能理解实现<code>HText</code>的子类实现的这四个抽象方法会在什么时候调用.从上面的代码可以看出来<code>initVariables();</code>方法是在<code>init();</code>方法里调用用来初始化,<code>animatePrepare(CharSequence text);</code>和<code>animateStart(CharSequence text);</code>是在<code>prepareAnimate();</code>方法里调用用来准备动画和开始动画,最后<code>drawFrame(Canvas canvas);</code>会在<code>onDraw(Canvas canvas);</code>方法里不断调用。所以从文章开始的使用方法中我们知道是调用<code>hTextView.animateText(text);</code>就可以执行动画了,所以最终都是调用继承自<code>HText</code>的子类的<code>animatePrepare(CharSequence text);</code>和<code>animateStart(CharSequence text);</code>方法。然后一定是在这里开始动画,不断的触发<code>onDraw()</code>方法来完成动画。</p>
+<p>好的,下面我们就来看看<code>ScaleText</code>的具体实现,由于篇幅原因,我们只具体分析一个<code>ScaleText</code>的实现,其余效果的实现只是绘制方法的不同,可以试着自己去阅读研究。<code>ScaleText</code>具体代码如下:</p>
+<pre><code>public class ScaleText extends HText {
+    float mostCount = 20;
+    float charTime = 400;
+    private long duration;
+    private float progress;
+
+    @Override
+    protected void initVariables() {
+
+    }
+
+    @Override
+    protected void animateStart(CharSequence text) {
+        int n = mText.length();
+        n = n &lt;= 0 ? 1 : n;
+        // 计算动画总时间
+        duration = (long) (charTime + charTime / mostCount * (n - 1));
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, duration).setDuration(duration);
+        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                progress = (float) animation.getAnimatedValue();
+                mHTextView.invalidate();
+            }
+        });
+        valueAnimator.start();
+    }
+
+    @Override
+    protected void animatePrepare(CharSequence text) {
+
+    }
+
+    @Override
+    public void drawFrame(Canvas canvas) {
+        float offset = startX;
+        float oldOffset = oldStartX;
+
+        int maxLength = Math.max(mText.length(), mOldText.length());
+
+        for (int i = 0; i &lt; maxLength; i++) {
+
+            // draw old text
+            if (i &lt; mOldText.length()) {
+
+                float percent = progress / duration;
+                int move = CharacterUtils.needMove(i, differentList);
+                if (move != -1) {
+                    mOldPaint.setTextSize(mTextSize);
+                    mOldPaint.setAlpha(255);
+
+                    float p = percent * 2f;
+                    p = p &gt; 1 ? 1 : p;
+                    float distX = CharacterUtils.getOffset(i, move, p, startX, oldStartX, gaps, oldGaps);
+                    canvas.drawText(mOldText.charAt(i) + &quot;&quot;, 0, 1, distX, startY, mOldPaint);
+                } else {
+                    mOldPaint.setAlpha((int) ((1 - percent) * 255));
+                    mOldPaint.setTextSize(mTextSize * (1 - percent));
+                    float width = mOldPaint.measureText(mOldText.charAt(i) + &quot;&quot;);
+                    canvas.drawText(mOldText.charAt(i) + &quot;&quot;, 0, 1, oldOffset + (oldGaps[i] - width) / 2, startY, mOldPaint);
+                }
+                oldOffset += oldGaps[i];
+            }
+
+            // draw new text
+            if (i &lt; mText.length()) {
+
+                if (!CharacterUtils.stayHere(i, differentList)) {
+
+                    int alpha = (int) (255f / charTime * (progress - charTime * i / mostCount));
+                    if (alpha &gt; 255) alpha = 255;
+                    if (alpha &lt; 0) alpha = 0;
+
+                    float size = mTextSize * 1f / charTime * (progress - charTime * i / mostCount);
+                    if (size &gt; mTextSize) size = mTextSize;
+                    if (size &lt; 0) size = 0;
+
+                    mPaint.setAlpha(alpha);
+                    mPaint.setTextSize(size);
+
+                    float width = mPaint.measureText(mText.charAt(i) + &quot;&quot;);
+                    canvas.drawText(mText.charAt(i) + &quot;&quot;, 0, 1, offset + (gaps[i] - width) / 2, startY, mPaint);
+                }
+                offset += gaps[i];
+            }
+        }
+    }
+}
+</code></pre><p>先来看<code>ScaleText</code>中定义的几个变量<code>mostCount</code>是表示最多同时执行动画的字符个数,为了实现顺序的动画执行,<code>charTime</code>表示<code>mostCount</code>个字符的动画时间,根据字符个数的不同动画时间不同,<code>duration</code>表示动画总时间,<code>progress</code>显然是表示进度.所以在<code>animateStart(CharSequence text)；</code>方法中,是根据字符个数的不同来计算总时间,代码如下:</p>
+<pre><code>int n = mText.length();
+n = n &lt;= 0 ? 1 : n;
+// 计算动画总时间
+duration = (long) (charTime + charTime / mostCount * (n - 1));
+</code></pre><p>然后再通过<code>ValueAnimator</code>设置好<code>progress</code>的区间以及动画的<code>duration</code>,最后在<code>onAnimationUpdate(ValueAnimator animation)</code>的回调接口里,不断的拿到当前的<code>progress</code>然后调用<code>mHTextView.invalidate();</code>来不断更新,我们都知道最终会不断的调用<code>onDraw();</code>方法所以流转到最后还是调用<code>ScaleText</code>的<code>drawFrame(Canvas canvas);</code>方法.所以最终的动画都是在这里实现的。</p>
+<p>从<code>drawFrame(Canvas canvas);</code>来看,首先是拿到了新旧字符串各自X方向的偏移量,因为看效果我们可以发现<code>ScaleText</code>切换的过程中总共有三种动画:</p>
+<pre><code>1.oldText中不重复字符的缩小动画.
+2.oldText中与newText中重复字符的位移动画.
+3.newText中不重复字符的放大动画.
+</code></pre><p>这三种动画都是在<code>drawFrame(Canvas canvas);</code>方法里处理的,首先是循环绘制每一个字符,然后先绘制<code>oldText</code>并在<code>oldText</code>首先判断这个字符是不是需要平移动画通过<code>CharacterUtils.needMove(i, differentList);</code>来判断,当不返回<code>-1</code>时表示需要进行平移动画,当返回<code>-1</code>时就进行缩小和透明动画,然后紧接着绘制<code>newText</code>,通过<code>!CharacterUtils.stayHere(i, differentList);</code>方法来跳过重复字符的绘制,然后再通过<code>progress</code>的值来计算出当前绘制的字符的大小和透明度。所以通过不断增加的<code>progress</code>和<code>onDraw();</code>方法的调用再配合这一系列算法,最终实现了我们要的动画。讲到这里整个库我们应该整体的理解了。</p>
+<p>我想有人会说,为什么这么一个简单的动画写这么类,我用一个类就能写出来,又是定义接口,又是抽象类又是继承烦不烦?可是我们不要忘了,他还有另外9种动画实现,将来还可能有几十种拓展出来的动画.如果都写在一个类里实现,那就毫无拓展性可言了,所以这里我们要聊聊设计模式的好处了。</p>
+<h3 id="u8BBE_u8BA1_u6A21_u5F0F"><a href="#u8BBE_u8BA1_u6A21_u5F0F" class="headerlink" title="设计模式"></a>设计模式</h3><p>此项目中用到两种常用的设计模式分别是<strong>策略模式</strong>和<strong>模板方法</strong>设计模式.</p>
+<h4 id="u7B56_u7565_u6A21_u5F0F"><a href="#u7B56_u7565_u6A21_u5F0F" class="headerlink" title="策略模式"></a>策略模式</h4><p><a href="https://github.com/simple-android-framework-exchange/android_design_patterns_analysis/tree/master/strategy/gkerison" target="_blank" rel="external">策略模式(点击关于策略模式的详解)</a> 定义了一系列的算法，并将每一个算法封装起来，而且使它们还可以相互替换。策略模式让算法独立于使用它的客户而独立变化。所以在这个库中,每一种动画都相当于一种独立算法,又可以相互替换,所以每一个实现了<code>HText</code>的子类相当于组成了策略模式,这样做使得类库的结构清晰明了,拓展方便,耦合度低。缺点就是策略越多实现的子类就会增加。不过相对于策略模式的好处这点也不算什么了。</p>
+<h4 id="u6A21_u677F_u65B9_u6CD5"><a href="#u6A21_u677F_u65B9_u6CD5" class="headerlink" title="模板方法"></a>模板方法</h4><p><a href="https://github.com/simple-android-framework-exchange/android_design_patterns_analysis/tree/master/template-method/mr.simple" target="_blank" rel="external">模板方法(点击关于模板方法的详解)</a>定义一个操作中的算法的框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。模板方法在此库中的体现是<code>HText</code>这个抽象类定义的那四个抽象方法,分别在<code>HText</code>中进行调用,将这些步骤延迟到子类中执行,所以子类可以实现各种各样的动画效果,这是很典型的模板方法设计模式。</p>
+<h3 id="u4E2A_u4EBA_u8BC4_u4EF7"><a href="#u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="个人评价"></a>个人评价</h3><p>至此,我们就算是彻底了解了HTextView,虽然并没有多么复杂,但是它使用的这些典型的设计模式以及各种动画的实现确实可以从中让我们学到不少知识。尤其是各种动画的具体实现,能为我们自己在做相关动画时提供不少思路!</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/28/Welcome-2016/" itemprop="url">
+                  Welcome 2016
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-28T08:59:04+08:00" content="2016-01-28">
+              2016-01-28
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/28/Welcome-2016/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/28/Welcome-2016/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>终于搭好了自己的博客网站,转眼2016年的第一个月都快过去了.一直想写一篇对2015年总结的文章和2016年的规划,今天终于动笔了.还好赶在了春节前~</p>
+<h3 id="Review_2015"><a href="#Review_2015" class="headerlink" title="Review 2015"></a>Review 2015</h3><p>记得2014年底的时候,我给自己定了三个三年内争取完成的目标:</p>
+<ul>
+<li>在github上拥有超过200star的项目.</li>
+<li>在用户量百万以上APP的公司工作.</li>
+<li>工资突破五位数.</li>
+</ul>
+<p>当初定这个目标的时候刚接触Android大半年,当时觉得这三个目标都挺遥远的.所以给自己三年时间来完成,欣慰的是从今天来看这当初的这三个目标,我在2015年都做到了而且都超出了目标很多:</p>
+<ul>
+<li>七月份的时候开源了<a href="https://github.com/Skykai521/StickerCamera" target="_blank" rel="external">StickerCamera</a>.意想不到的是项目的star数迅速超过了1000..记得当初我给自己说过,如果StickerCamera的star数超过150就给自己一次说走就走的旅行..虽然现在还没去,不过还是很开心.</li>
+<li>十月份的时候,加入了薄荷,整个过程真的是特别奇妙的一段体验,以后有时间会单独写关于薄荷以及我们的团队的文章.总之在这工作真的特爽~薄荷APP的用户量是千万级的.所以第二个目标也算是超额完成吧.</li>
+<li>第三个目标是在五月份的时候完成的,主要还是因为现在移动互联网岗位稀缺的因素吧,整个行业的工资都是这样,培训出来都是10k+,所以这点没什么好说的了..</li>
+</ul>
+<p>所以回顾整个2015年,对我自己来说我做了不少正确的决定,每一次做的决定都为现在做下了铺垫,所以对自己2015的表现还算满意,值得一提的是,年底来薄荷之后我通过科学的减肥也算是真正的瘦下来了,目前腹肌进行时中.加油! </p>
+<h3 id="Welcome_2016"><a href="#Welcome_2016" class="headerlink" title="Welcome 2016"></a>Welcome 2016</h3><p>今年我准备尝试更多新的技术,更多的编程语言,而且会多去了解产品方面的知识等等,因为一直都对做产品非常感兴趣,现在也是做的自己喜欢的领域,所以我会尽量多的去参与产品。而且工程师们确实更应该关注产品关注业务,不然写代码为了什么呢,本身就是为了更好的服务业务和产品。下面主要分技术和生活列出我自己2016年的计划。希望自己新的一年能继续加油。</p>
+<h4 id="u6280_u672F_u65B9_u9762"><a href="#u6280_u672F_u65B9_u9762" class="headerlink" title="技术方面"></a>技术方面</h4><ul>
+<li><strong>每周分享一篇技术博客</strong>.主要包含自己对自己工作的总结,以及对一些优秀框架的解析,可能还会有一些其他语言的分享.由于每周分享一篇博客是我们公司技术部组织的活动,每个人自由报名,我自己还是喜欢这种形式的,因为本身比较懒,如果以参加活动的方式去参与,自己也就更有动力去做这件事了.而且会要求自己要做的更好.</li>
+<li><strong>尽可能的贡献开源代码</strong>.可以说从工作的第一天开始,就受益于各种开源代码,从最早的在CSDN上下载代码,到后来几乎天天都要去github看看,一路以来,开源对自己工作的帮助太大了,所以尽可能的去回报开源社区也是我一直想做的,前段时间有个想法,也实践出demo来了,不过还是觉得实现的不够优雅全部推翻了,以后可能会打算重写,总之2016年希望能写出不错的开源库出来。</li>
+<li><strong>多多尝试新的技术和语言</strong>.还记得在14年底的时候,那时候觉得自己在Android方面稳固的提升,所以就想更多的尝试更多的语言,那时候做了点Unity3D,也学了些IOS,不过因为后来还是觉得在Android上做的不够精所以不想分心,后来就只是会偶尔看看IOS,不过现在基本上也忘了差不多了,现在自己工作两年了,也有条件去重新尝试这些新的语言,上周末刚学JS并在我同学的帮助下写了一个小页面,可以用来查看干货集中营的干货,我自己是能真正的感受到,当有一定的工作经验之后,再去尝试别的语言上手确实很快,而且会有更深层次的理解.所以希望自己在这一点上也能做的很好。加油!</li>
+</ul>
+<h4 id="u751F_u6D3B_u65B9_u9762"><a href="#u751F_u6D3B_u65B9_u9762" class="headerlink" title="生活方面"></a>生活方面</h4><ul>
+<li><strong>学好吉他</strong>.吉他也买了一段时间了,就在刚买的时候练了一个星期,然后吉他就一直睡觉睡到现在,春节之后打算找一个靠谱的吉他老师教教我,我的要求不高,只要自己能弹弹民谣就行了。。一直听说吉他是最容易学的乐器,希望能把吉他学好.</li>
+<li><strong>练出腹肌</strong>.前文也有在说最近一直都在减肥,三个月左右我从150斤到昨天128斤,减肥这件事还算是小有所成吧.我采用的减肥方法是很健康的,运动和饮食均衡,也是我们薄荷所倡导的,所以没有任何副作用,当然这事也和自己的毅力分不开,哈哈,练出腹肌这件事现在就一直在坚持,不过还是作为2016年的目标写出来吧.加油!</li>
+<li><strong>说好英语</strong>.自己的英语还算是可以吧,因为现在总是用google了,而且很多编程资料也只有英文版,所以这点一直都在有学习,但是我的目标是说好英语,这点现在做的太烂了,而且书写能力也不好,前段时间收到一些外国工程师的邮件来问StickerCamera项目的事,明明知道该如何如何回复,但又写不出来,最后发回去的邮件也不知道他们能不能看懂。。所以今年打算去报一个靠谱的英语培训班,把自己的口语和书写能力提高一下。英语毕竟是世界上最流行的语言,自己也一直感兴趣,所以这点要好好努力。</li>
+<li><strong>做一手好菜</strong>.前年毕业在无锡的时候学会了做菜,大体上是会做了但是做的不怎么好吃,等春节之后准备换一个不错的房子住,所以打算以后自己多多学学做饭,毕竟自己是个吃货,如果又能做一手好菜就更好了了,想吃什么就能自己做了^_^</li>
+</ul>
+<p>差不多写完了,这些算是对整个2016年的计划了,我很难想象如果把这些都做到了17年我会成什么样了^_^,以上这些都是我目前想做的,可能过段时间会有更多想做的事情,我一直对自己的要求是做让自己开心的事,过去的一年真的过得很开心,做的都是我喜欢做的事,遇到了一群nice的同事和朋友.希望能一直这样下去,2016加油!</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 
@@ -394,7 +981,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -408,7 +995,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
