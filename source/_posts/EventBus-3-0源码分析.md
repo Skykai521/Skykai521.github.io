@@ -1,5 +1,10 @@
 ---
 title: EventBus 3.0 源代码分析
+date: 2016-02-20 17:49:27
+tags:
+- EventBus 3.0
+- 观察者模式
+- 源代码分析
 ---
 > 项目地址：[EventBus](https://github.com/greenrobot/EventBus)，本文分析版本: [513f466](https://github.com/greenrobot/EventBus/tree/513f466fee9eec849d4c6a900b7fc1bf6bdc8fba)
 
@@ -8,6 +13,7 @@ title: EventBus 3.0 源代码分析
 想必每个入了门的Android开发者都多少对EventBus有过了解,EventBus是一个Android事件发布/订阅框架，通过解耦发布者和订阅者简化 Android 事件传递。EventBus使用简单,并将事件发布和订阅充分解耦,从而使代码更简洁。一直以来很受开发者的欢迎,截止到目前EventBus的安装量已经超过一亿次。足以看出EventBus有多么的优秀。
 
 目前网上已经有不少优秀的EventBus的源码分析文章,我也一直在犹豫要不要再写一次,一方面是因为最近EventBus刚好更新了3.0版本,事件的订阅已经从方法名换成了注解的方式,而且整体还是有不少变化。另外一方面也是为了自己学习。毕竟写出来会有更深层次的理解。好了,下面让我们看看3.0版本EventBus的使用方法.
+<!-- more -->
 
 ### 2.使用方法
 #### 2.1注册订阅者

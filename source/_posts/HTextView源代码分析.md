@@ -1,5 +1,11 @@
 ---
 title: HTextView源代码分析
+date: 2016-01-30 17:49:27
+tags:
+- HTextView
+- 策略模式
+- 源代码分析
+- 模板方法
 ---
 [HTextView](https://github.com/hanks-zyh/HTextView)是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。
 
@@ -9,7 +15,7 @@ HTextView的使用方法还是比较简单的,只需要调用`hTextView.setAnima
     hTextView.setAnimateType(HTextViewType.SCALE);
 	hTextView.animateText(sentences[mCounter]);
 
-
+<!-- more -->
 ### 类关系图 ###
 ![](http://ww2.sinaimg.cn/mw690/7909c3e7gw1f0gr0gba5vj20ra0fv74z.jpg)
 

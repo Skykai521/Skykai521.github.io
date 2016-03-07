@@ -10,6 +10,7 @@ tags:
 
 ### 1.简介
 [Picasso](https://github.com/square/picasso)是Square公司开源的一个Android平台上的图片加载框架,也是大名鼎鼎的[JakeWharton](https://github.com/JakeWharton)的代表作品之一.对于图片加载和缓存框架,优秀的开源作品有不少。比如:[Android-Universal-Image-Loader](https://github.com/nostra13/Android-Universal-Image-Loader),[Glide](https://github.com/bumptech/glide),[fresco](https://github.com/facebook/fresco)等等.我自己有在项目中使用过的有`Picasso`,`U-I-L`,`Glide`.对于一般的应用上面这些图片加载和缓存框架都是能满足使用的,[Trinea](http://www.trinea.cn/)有一篇关于这些框架的对比文章[Android 三大图片缓存原理、特性对比](http://www.trinea.cn/android/android-image-cache-compare/).有兴趣了解的可以去看看,本文我们主要讲`Picasso`的使用方法和源码分析.
+<!-- more -->
 ### 2.使用方法
 
 ```java

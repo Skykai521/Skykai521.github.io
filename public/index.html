@@ -219,6 +219,101 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/04/SwipeBackLayout源代码分析/" itemprop="url">
+                  SwipeBackLayout源代码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-04T17:49:27+08:00" content="2016-03-04">
+              2016-03-04
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/04/SwipeBackLayout源代码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/04/SwipeBackLayout源代码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>项目地址：<a href="https://github.com/ikew0ng/SwipeBackLayout" target="_blank" rel="external">SwipeBackLayout</a>，本文分析版本: <a href="https://github.com/ikew0ng/SwipeBackLayout/tree/e4ddae6d2b8af9b606493cba36faef8beba94be2" target="_blank" rel="external">e4ddae6d</a></p>
+</blockquote>
+<h3 id="1-_u7B80_u4ECB"><a href="#1-_u7B80_u4ECB" class="headerlink" title="1.简介"></a>1.简介</h3><p><a href="https://github.com/ikew0ng/SwipeBackLayout" target="_blank" rel="external">SwipeBackLayout</a>是一个在<code>Android</code>平台上实现了<code>Activity</code>滑动返回的库.实现了左,右,上,下四种手势返回的功能,在<code>ios</code>里滑动返回是系统自带可以配置的功能,而在我们<code>Android</code>上并没有系统级别的提供,但是主流应用比如微信就带有滑动返回功能,而且滑动返回是一个非常容易培养用户使用习惯的操作,用惯了滑动返回再用没有滑动返回的应用简直不能好好用了。。我自己正是滑动返回这个手势的重度使用者,我非常喜欢用滑动返回,所以在我开发过的应用里我都尽量集成了滑动返回这个功能,当然我相信是有很多人有滑动返回的使用习惯的。<code>SwipeBackLayout</code>应该算是使用范围最广的滑动返回的库了,我一直也是这个库的使用者,今天我们就来分析一下这个库是如何实现的:</p>
+<h3 id="2-_u4F7F_u7528_u65B9_u6CD5"><a href="#2-_u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="2.使用方法"></a>2.使用方法</h3><h3 id="3-_u7C7B_u5173_u7CFB_u56FE"><a href="#3-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="3.类关系图"></a>3.类关系图</h3><p><img src="/image/swipeback_class_relation.jpg" alt="img"></p>
+<h3 id="4-_u6E90_u7801_u5206_u6790"><a href="#4-_u6E90_u7801_u5206_u6790" class="headerlink" title="4.源码分析"></a>4.源码分析</h3><h3 id="5-_u5B58_u5728_u7684bug"><a href="#5-_u5B58_u5728_u7684bug" class="headerlink" title="5.存在的bug"></a>5.存在的bug</h3><h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/02/25/Picasso源代码分析/" itemprop="url">
                   Picasso源代码分析
                 </a>
@@ -1026,7 +1121,7 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1040,7 +1135,7 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
