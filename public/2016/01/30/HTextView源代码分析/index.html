@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="HTextView,模板方法,源代码分析,策略模式," />
 
 
 
@@ -66,7 +66,7 @@
 <meta property="og:description" content="HTextView是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。
 使用方法HTextView的使用方">
 <meta property="og:image" content="http://ww2.sinaimg.cn/mw690/7909c3e7gw1f0gr0gba5vj20ra0fv74z.jpg">
-<meta property="og:updated_time" content="2016-01-30T08:17:07.000Z">
+<meta property="og:updated_time" content="2016-03-07T01:00:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTextView源代码分析">
 <meta name="twitter:description" content="HTextView是一个用来给TextView里的文字做各种转换动画的开源库,第一次看到这个库的时候就被这些动画吸引了,不仅提供了多种动画选择,而且还有重复字符的位移动画,的确别出心裁,虽然实现起来并不是多么复杂,但是从1700+的star数上还是可以看出它的受欢迎程度,所以今天我们就来分析看看它到底是如何实现的.有哪些值得我们借鉴的地方,又有哪些不完善的地方。
@@ -227,7 +227,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-30T16:17:07+08:00" content="2016-01-30">
+            <time itemprop="dateCreated" datetime="2016-01-30T17:49:27+08:00" content="2016-01-30">
               2016-01-30
             </time>
           </span>
@@ -264,7 +264,8 @@
 <h3 id="u4F7F_u7528_u65B9_u6CD5"><a href="#u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="使用方法"></a>使用方法</h3><p>HTextView的使用方法还是比较简单的,只需要调用<code>hTextView.setAnimateType();</code>来设定一种动画的类型,再调用<code>hTextView.animateText();</code>将字符串传入就可以执行切换动画了,此外还提供了<code>hTextView.reset();</code>方法来重置动画,具体代码如下:</p>
 <pre><code>hTextView.setAnimateType(HTextViewType.SCALE);
 hTextView.animateText(sentences[mCounter]);
-</code></pre><h3 id="u7C7B_u5173_u7CFB_u56FE"><a href="#u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="类关系图"></a>类关系图</h3><p><img src="http://ww2.sinaimg.cn/mw690/7909c3e7gw1f0gr0gba5vj20ra0fv74z.jpg" alt=""></p>
+</code></pre><a id="more"></a>
+<h3 id="u7C7B_u5173_u7CFB_u56FE"><a href="#u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="类关系图"></a>类关系图</h3><p><img src="http://ww2.sinaimg.cn/mw690/7909c3e7gw1f0gr0gba5vj20ra0fv74z.jpg" alt=""></p>
 <p>当我们去分析一个项目的时候,首先看这个类库的UML类图往往是最直观的,能很清晰的将各个类的关系用图的形式展示的很清楚,这里我是使用的Android Studio的插件<a href="https://plugins.jetbrains.com/plugin/4946?pr=" target="_blank" rel="external">simpleUMLCE</a>来自动生成的类图,非常方便推荐给大家,另外如果看不懂UML图可以参照<a href="http://blog.csdn.net/lovelion/article/details/7838679" target="_blank" rel="external">深入浅出UML类图系列</a>,已经讲得很详细我就不再补充了。</p>
 <p>从类图上看我们可以很清晰的看出,首先是定义了一个<code>IHText</code>的接口,然后<code>HText</code>实现了<code>IHText</code>的接口,然后左边的那么多类,可以从名字上大致猜出是各种动画的具体实现他们都是继承了HText类,值得一提的是<code>PixelateText</code>和<code>BurnText</code>是直接实现<code>IHText</code>的,我猜测应该是作者后期重构代码的时候忘记这两个类了,实际上这两个类也是可以继承自<code>HText</code>来实现.最后可以看出<code>IHText</code>是和<code>HTextView</code>相互耦合的.好的,类图就讲到这里,下面我们来看具体实现.</p>
 <h3 id="u6E90_u7801_u5206_u6790"><a href="#u6E90_u7801_u5206_u6790" class="headerlink" title="源码分析"></a>源码分析</h3><p>在开始分析一个开源项目的时候,我们往往先从其定义的接口来看,所以我们先看<code>IHText</code>接口是如何定义的:</p>
@@ -565,6 +566,18 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/HTextView/" rel="tag">#HTextView</a>
+          
+            <a href="/tags/模板方法/" rel="tag">#模板方法</a>
+          
+            <a href="/tags/源代码分析/" rel="tag">#源代码分析</a>
+          
+            <a href="/tags/策略模式/" rel="tag">#策略模式</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -666,7 +679,7 @@ duration = (long) (charTime + charTime / mostCount * (n - 1));
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
