@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="年终总结,计划," />
+  <meta name="keywords" content="SwipeBackLayout,ViewDragHelper,源代码分析," />
 
 
 
@@ -57,37 +57,16 @@
 
 
 
-<meta name="description" content="终于搭好了自己的博客网站,转眼2016年的第一个月都快过去了.一直想写一篇对2015年总结的文章和2016年的规划,今天终于动笔了.还好赶在了春节前~
-Review 2015记得2014年底的时候,我给自己定了三个三年内争取完成的目标:
-
-在github上拥有超过200star的项目.
-在用户量百万以上APP的公司工作.
-工资突破五位数.
-
-当初定这个目标的时候刚接触Android大半年,当时觉得">
+<meta name="description" content="1.简介在上一篇文章SwipeBackLayout源代码分析中,我们了解了ViewDragHelper是可以帮助我们处理各种拖拽事件的类.使用好ViewDragHelper能帮助我们做出各种酷炫的交互,今天我们就来分析一下ViewDragHelper的使用与实现:">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Welcome 2016">
-<meta property="og:url" content="http://yoursite.com/2016/01/28/Welcome-2016/index.html">
+<meta property="og:title" content="ViewDragHelper源代码分析">
+<meta property="og:url" content="http://yoursite.com/2016/03/09/ViewDragHelper源代码分析/index.html">
 <meta property="og:site_name" content="Skykai">
-<meta property="og:description" content="终于搭好了自己的博客网站,转眼2016年的第一个月都快过去了.一直想写一篇对2015年总结的文章和2016年的规划,今天终于动笔了.还好赶在了春节前~
-Review 2015记得2014年底的时候,我给自己定了三个三年内争取完成的目标:
-
-在github上拥有超过200star的项目.
-在用户量百万以上APP的公司工作.
-工资突破五位数.
-
-当初定这个目标的时候刚接触Android大半年,当时觉得">
-<meta property="og:updated_time" content="2016-03-09T06:27:59.000Z">
+<meta property="og:description" content="1.简介在上一篇文章SwipeBackLayout源代码分析中,我们了解了ViewDragHelper是可以帮助我们处理各种拖拽事件的类.使用好ViewDragHelper能帮助我们做出各种酷炫的交互,今天我们就来分析一下ViewDragHelper的使用与实现:">
+<meta property="og:updated_time" content="2016-03-09T06:30:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Welcome 2016">
-<meta name="twitter:description" content="终于搭好了自己的博客网站,转眼2016年的第一个月都快过去了.一直想写一篇对2015年总结的文章和2016年的规划,今天终于动笔了.还好赶在了春节前~
-Review 2015记得2014年底的时候,我给自己定了三个三年内争取完成的目标:
-
-在github上拥有超过200star的项目.
-在用户量百万以上APP的公司工作.
-工资突破五位数.
-
-当初定这个目标的时候刚接触Android大半年,当时觉得">
+<meta name="twitter:title" content="ViewDragHelper源代码分析">
+<meta name="twitter:description" content="1.简介在上一篇文章SwipeBackLayout源代码分析中,我们了解了ViewDragHelper是可以帮助我们处理各种拖拽事件的类.使用好ViewDragHelper能帮助我们做出各种酷炫的交互,今天我们就来分析一下ViewDragHelper的使用与实现:">
 
 
 
@@ -105,7 +84,7 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
   };
 </script>
 
-  <title> Welcome 2016 | Skykai </title>
+  <title> ViewDragHelper源代码分析 | Skykai </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -222,7 +201,7 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
             
             
               
-                Welcome 2016
+                ViewDragHelper源代码分析
               
             
           </h1>
@@ -234,8 +213,8 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-28T17:49:27+08:00" content="2016-01-28">
-              2016-01-28
+            <time itemprop="dateCreated" datetime="2016-03-09T14:07:14+08:00" content="2016-03-09">
+              2016-03-09
             </time>
           </span>
 
@@ -245,8 +224,8 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/01/28/Welcome-2016/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/28/Welcome-2016/" itemprop="commentsCount"></span>
+                <a href="/2016/03/09/ViewDragHelper源代码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/09/ViewDragHelper源代码分析/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -267,34 +246,8 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
       
 
       
-        <p>终于搭好了自己的博客网站,转眼2016年的第一个月都快过去了.一直想写一篇对2015年总结的文章和2016年的规划,今天终于动笔了.还好赶在了春节前~</p>
-<h3 id="Review_2015"><a href="#Review_2015" class="headerlink" title="Review 2015"></a>Review 2015</h3><p>记得2014年底的时候,我给自己定了三个三年内争取完成的目标:</p>
-<ul>
-<li>在github上拥有超过200star的项目.</li>
-<li>在用户量百万以上APP的公司工作.</li>
-<li>工资突破五位数.</li>
-</ul>
-<p>当初定这个目标的时候刚接触Android大半年,当时觉得这三个目标都挺遥远的.所以给自己三年时间来完成,欣慰的是从今天来看这当初的这三个目标,我在2015年都做到了而且都超出了目标很多:</p>
-<ul>
-<li>七月份的时候开源了<a href="https://github.com/Skykai521/StickerCamera" target="_blank" rel="external">StickerCamera</a>.意想不到的是项目的star数迅速超过了1000..记得当初我给自己说过,如果StickerCamera的star数超过150就给自己一次说走就走的旅行..虽然现在还没去,不过还是很开心.</li>
-<li>十月份的时候,加入了薄荷,整个过程真的是特别奇妙的一段体验,以后有时间会单独写关于薄荷以及我们的团队的文章.总之在这工作真的特爽~薄荷APP的用户量是千万级的.所以第二个目标也算是超额完成吧.</li>
-<li>第三个目标是在五月份的时候完成的,主要还是因为现在移动互联网岗位稀缺的因素吧,整个行业的工资都是这样,培训出来都是10k+,所以这点没什么好说的了..</li>
-</ul>
-<p>所以回顾整个2015年,对我自己来说我做了不少正确的决定,每一次做的决定都为现在做下了铺垫,所以对自己2015的表现还算满意,值得一提的是,年底来薄荷之后我通过科学的减肥也算是真正的瘦下来了,目前腹肌进行时中.加油!<br><a id="more"></a></p>
-<h3 id="Welcome_2016"><a href="#Welcome_2016" class="headerlink" title="Welcome 2016"></a>Welcome 2016</h3><p>今年我准备尝试更多新的技术,更多的编程语言,而且会多去了解产品方面的知识等等,因为一直都对做产品非常感兴趣,现在也是做的自己喜欢的领域,所以我会尽量多的去参与产品。而且工程师们确实更应该关注产品关注业务,不然写代码为了什么呢,本身就是为了更好的服务业务和产品。下面主要分技术和生活列出我自己2016年的计划。希望自己新的一年能继续加油。</p>
-<h4 id="u6280_u672F_u65B9_u9762"><a href="#u6280_u672F_u65B9_u9762" class="headerlink" title="技术方面"></a>技术方面</h4><ul>
-<li><strong>每周分享一篇技术博客</strong>.主要包含自己对自己工作的总结,以及对一些优秀框架的解析,可能还会有一些其他语言的分享.由于每周分享一篇博客是我们公司技术部组织的活动,每个人自由报名,我自己还是喜欢这种形式的,因为本身比较懒,如果以参加活动的方式去参与,自己也就更有动力去做这件事了.而且会要求自己要做的更好.</li>
-<li><strong>尽可能的贡献开源代码</strong>.可以说从工作的第一天开始,就受益于各种开源代码,从最早的在CSDN上下载代码,到后来几乎天天都要去github看看,一路以来,开源对自己工作的帮助太大了,所以尽可能的去回报开源社区也是我一直想做的,前段时间有个想法,也实践出demo来了,不过还是觉得实现的不够优雅全部推翻了,以后可能会打算重写,总之2016年希望能写出不错的开源库出来。</li>
-<li><strong>多多尝试新的技术和语言</strong>.还记得在14年底的时候,那时候觉得自己在Android方面稳固的提升,所以就想更多的尝试更多的语言,那时候做了点Unity3D,也学了些IOS,不过因为后来还是觉得在Android上做的不够精所以不想分心,后来就只是会偶尔看看IOS,不过现在基本上也忘了差不多了,现在自己工作两年了,也有条件去重新尝试这些新的语言,上周末刚学JS并在我同学的帮助下写了一个小页面,可以用来查看干货集中营的干货,我自己是能真正的感受到,当有一定的工作经验之后,再去尝试别的语言上手确实很快,而且会有更深层次的理解.所以希望自己在这一点上也能做的很好。加油!</li>
-</ul>
-<h4 id="u751F_u6D3B_u65B9_u9762"><a href="#u751F_u6D3B_u65B9_u9762" class="headerlink" title="生活方面"></a>生活方面</h4><ul>
-<li><strong>学好吉他</strong>.吉他也买了一段时间了,就在刚买的时候练了一个星期,然后吉他就一直睡觉睡到现在,春节之后打算找一个靠谱的吉他老师教教我,我的要求不高,只要自己能弹弹民谣就行了。。一直听说吉他是最容易学的乐器,希望能把吉他学好.</li>
-<li><strong>练出腹肌</strong>.前文也有在说最近一直都在减肥,三个月左右我从150斤到昨天128斤,减肥这件事还算是小有所成吧.我采用的减肥方法是很健康的,运动和饮食均衡,也是我们薄荷所倡导的,所以没有任何副作用,当然这事也和自己的毅力分不开,哈哈,练出腹肌这件事现在就一直在坚持,不过还是作为2016年的目标写出来吧.加油!</li>
-<li><strong>说好英语</strong>.自己的英语还算是可以吧,因为现在总是用google了,而且很多编程资料也只有英文版,所以这点一直都在有学习,但是我的目标是说好英语,这点现在做的太烂了,而且书写能力也不好,前段时间收到一些外国工程师的邮件来问StickerCamera项目的事,明明知道该如何如何回复,但又写不出来,最后发回去的邮件也不知道他们能不能看懂。。所以今年打算去报一个靠谱的英语培训班,把自己的口语和书写能力提高一下。英语毕竟是世界上最流行的语言,自己也一直感兴趣,所以这点要好好努力。</li>
-<li><strong>做一手好菜</strong>.前年毕业在无锡的时候学会了做菜,大体上是会做了但是做的不怎么好吃,等春节之后准备换一个不错的房子住,所以打算以后自己多多学学做饭,毕竟自己是个吃货,如果又能做一手好菜就更好了了,想吃什么就能自己做了^_^</li>
-</ul>
-<p>差不多写完了,这些算是对整个2016年的计划了,我很难想象如果把这些都做到了17年我会成什么样了^_^,以上这些都是我目前想做的,可能过段时间会有更多想做的事情,我一直对自己的要求是做让自己开心的事,过去的一年真的过得很开心,做的都是我喜欢做的事,遇到了一群nice的同事和朋友.希望能一直这样下去,2016加油!</p>
-
+        <h3 id="1-_u7B80_u4ECB"><a href="#1-_u7B80_u4ECB" class="headerlink" title="1.简介"></a>1.简介</h3><p>在上一篇文章<a href="http://skykai521.github.io/2016/03/04/SwipeBackLayout%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" target="_blank" rel="external">SwipeBackLayout源代码分析</a>中,我们了解了<code>ViewDragHelper</code>是可以帮助我们处理各种拖拽事件的类.使用好<code>ViewDragHelper</code>能帮助我们做出各种酷炫的交互,今天我们就来分析一下<code>ViewDragHelper</code>的使用与实现:<br><a id="more"></a></p>
+<h3 id="2-_u4F7F_u7528_u65B9_u6CD5"><a href="#2-_u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="2.使用方法"></a>2.使用方法</h3><h3 id="3-_u7C7B_u5173_u7CFB_u56FE"><a href="#3-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="3.类关系图"></a>3.类关系图</h3><h3 id="4-_u6E90_u7801_u5206_u6790"><a href="#4-_u6E90_u7801_u5206_u6790" class="headerlink" title="4.源码分析"></a>4.源码分析</h3><h3 id="5-_u5F00_u6E90_u9879_u76EE_u4E2D_u7684_u4F7F_u7528"><a href="#5-_u5F00_u6E90_u9879_u76EE_u4E2D_u7684_u4F7F_u7528" class="headerlink" title="5.开源项目中的使用"></a>5.开源项目中的使用</h3><h3 id="6-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#6-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="6.个人评价"></a>6.个人评价</h3>
       
     </div>
 
@@ -302,9 +255,11 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
       
         <div class="post-tags">
           
-            <a href="/tags/年终总结/" rel="tag">#年终总结</a>
+            <a href="/tags/SwipeBackLayout/" rel="tag">#SwipeBackLayout</a>
           
-            <a href="/tags/计划/" rel="tag">#计划</a>
+            <a href="/tags/ViewDragHelper/" rel="tag">#ViewDragHelper</a>
+          
+            <a href="/tags/源代码分析/" rel="tag">#源代码分析</a>
           
         </div>
       
@@ -313,13 +268,13 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/03/04/SwipeBackLayout源代码分析/" rel="next" title="SwipeBackLayout源代码分析">
+                <i class="fa fa-chevron-left"></i> SwipeBackLayout源代码分析
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/01/30/HTextView源代码分析/" rel="prev" title="HTextView源代码分析">
-                HTextView源代码分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -345,8 +300,8 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/01/28/Welcome-2016/"
-           data-title="Welcome 2016" data-url="http://yoursite.com/2016/01/28/Welcome-2016/">
+      <div class="ds-thread" data-thread-key="2016/03/09/ViewDragHelper源代码分析/"
+           data-title="ViewDragHelper源代码分析" data-url="http://yoursite.com/2016/03/09/ViewDragHelper源代码分析/">
       </div>
     
   </div>
@@ -455,7 +410,7 @@ Review 2015记得2014年底的时候,我给自己定了三个三年内争取完�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Review_2015"><span class="nav-number">1.</span> <span class="nav-text">Review 2015</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Welcome_2016"><span class="nav-number">2.</span> <span class="nav-text">Welcome 2016</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u6280_u672F_u65B9_u9762"><span class="nav-number">2.1.</span> <span class="nav-text">技术方面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u751F_u6D3B_u65B9_u9762"><span class="nav-number">2.2.</span> <span class="nav-text">生活方面</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_u7B80_u4ECB"><span class="nav-number">1.</span> <span class="nav-text">1.简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_u4F7F_u7528_u65B9_u6CD5"><span class="nav-number">2.</span> <span class="nav-text">2.使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-_u7C7B_u5173_u7CFB_u56FE"><span class="nav-number">3.</span> <span class="nav-text">3.类关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-_u6E90_u7801_u5206_u6790"><span class="nav-number">4.</span> <span class="nav-text">4.源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-_u5F00_u6E90_u9879_u76EE_u4E2D_u7684_u4F7F_u7528"><span class="nav-number">5.</span> <span class="nav-text">5.开源项目中的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-_u4E2A_u4EBA_u8BC4_u4EF7"><span class="nav-number">6.</span> <span class="nav-text">6.个人评价</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
