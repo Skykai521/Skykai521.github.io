@@ -209,6 +209,199 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/23/ViewAnimator源代码分析/" itemprop="url">
+                  ViewAnimator源代码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-23T08:39:32+08:00" content="2016-03-23">
+              2016-03-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/23/ViewAnimator源代码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/23/ViewAnimator源代码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>项目地址：<a href="https://github.com/florent37/ViewAnimator">ViewAnimator</a>，本文分析版本: <a href="https://github.com/florent37/ViewAnimator/tree/dfa45e000aa5954581d31fc987b1f34ed62594df">dfa45e0</a></p>
+</blockquote>
+<h3 id="1-_u7B80_u4ECB"><a href="#1-_u7B80_u4ECB" class="headerlink" title="1.简介"></a>1.简介</h3>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/23/ViewAnimator源代码分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/16/uCrop源代码分析/" itemprop="url">
+                  uCrop源代码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-16T21:35:27+08:00" content="2016-03-16">
+              2016-03-16
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/16/uCrop源代码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/16/uCrop源代码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>项目地址：<a href="https://github.com/Yalantis/uCrop">uCrop</a>，本文分析版本: <a href="https://github.com/Yalantis/uCrop/tree/83b77c018d95889f4aabe6fd899b81cfef20f1be2">83b77c0</a></p>
+</blockquote>
+<h3 id="1-_u7B80_u4ECB"><a href="#1-_u7B80_u4ECB" class="headerlink" title="1.简介"></a>1.简介</h3><p><img src="https://d13yacurqjgara.cloudfront.net/users/221935/screenshots/2474295/animation.gif" alt="uCrop.png"></p>
+<p>在项目开发中,我们难免会有一些功能,比如上传用户头像,上传图片等等会使用到图片裁剪的功能,为了节省开发时间,我们一般不会去自己开发一个图片剪裁库,这时候我们会去<code>github</code>上寻找各种开源的图片裁剪库,找来找去会发现目前最好用的就要数<code>Yalantis</code>公司出的<a href="https://github.com/Yalantis/uCrop">uCrop</a>了.这也是最近刚刚开源的一个库,<code>Yalantis</code>专门写了一篇文章来说明问什么会有<code>uCrop</code>这个项目,以及对比了目前主流的几个图片剪裁的项目,地址<a href="https://yalantis.com/blog/introducing-ucrop-our-own-image-cropping-library-for-android/">在这</a>.英文不错的同学可以去看看,话说英文对工程师来说还是很重要的,读英文资料以及逛英文社区可以很好的拓宽我们的技术视野,也能第一时间接触最前沿的技术。好了废话不多说,今天我们就来看看<code>uCrop</code>这个目前最好的图片剪裁库是如何使用以及实现的:<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/16/uCrop源代码分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/09/ViewDragHelper源代码分析/" itemprop="url">
                   ViewDragHelper源代码分析
                 </a>
@@ -812,7 +1005,7 @@ hTextView.animateText(sentences[mCounter]);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -826,7 +1019,7 @@ hTextView.animateText(sentences[mCounter]);
 
           <div class="site-state-item site-state-tags">
             
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">标签</span>
               
           </div>

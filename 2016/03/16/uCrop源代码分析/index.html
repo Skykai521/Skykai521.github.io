@@ -1,0 +1,768 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="uCrop,图片剪裁,建造者模式,源代码分析," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="项目地址：uCrop，本文分析版本: 83b77c0
+
+1.简介
+在项目开发中,我们难免会有一些功能,比如上传用户头像,上传图片等等会使用到图片裁剪的功能,为了节省开发时间,我们一般不会去自己开发一个图片剪裁库,这时候我们会去github上寻找各种开源的图片裁剪库,找来找去会发现目前最好用的就要数Yalantis公司出的uCrop了.这也是最近刚刚开源的一个库,Yalantis专门写了一篇文章来说">
+<meta property="og:type" content="article">
+<meta property="og:title" content="uCrop源代码分析">
+<meta property="og:url" content="http://yoursite.com/2016/03/16/uCrop源代码分析/index.html">
+<meta property="og:site_name" content="Skykai">
+<meta property="og:description" content="项目地址：uCrop，本文分析版本: 83b77c0
+
+1.简介
+在项目开发中,我们难免会有一些功能,比如上传用户头像,上传图片等等会使用到图片裁剪的功能,为了节省开发时间,我们一般不会去自己开发一个图片剪裁库,这时候我们会去github上寻找各种开源的图片裁剪库,找来找去会发现目前最好用的就要数Yalantis公司出的uCrop了.这也是最近刚刚开源的一个库,Yalantis专门写了一篇文章来说">
+<meta property="og:image" content="https://d13yacurqjgara.cloudfront.net/users/221935/screenshots/2474295/animation.gif">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1485091-2dc8413a8b747851.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-03-23T00:37:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="uCrop源代码分析">
+<meta name="twitter:description" content="项目地址：uCrop，本文分析版本: 83b77c0
+
+1.简介
+在项目开发中,我们难免会有一些功能,比如上传用户头像,上传图片等等会使用到图片裁剪的功能,为了节省开发时间,我们一般不会去自己开发一个图片剪裁库,这时候我们会去github上寻找各种开源的图片裁剪库,找来找去会发现目前最好用的就要数Yalantis公司出的uCrop了.这也是最近刚刚开源的一个库,Yalantis专门写了一篇文章来说">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: "always",
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> uCrop源代码分析 | Skykai </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73013049-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+
+  <div class="container one-collumn  page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Skykai</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                uCrop源代码分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-16T21:35:27+08:00" content="2016-03-16">
+              2016-03-16
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/16/uCrop源代码分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/16/uCrop源代码分析/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>项目地址：<a href="https://github.com/Yalantis/uCrop" target="_blank" rel="external">uCrop</a>，本文分析版本: <a href="https://github.com/Yalantis/uCrop/tree/83b77c018d95889f4aabe6fd899b81cfef20f1be2" target="_blank" rel="external">83b77c0</a></p>
+</blockquote>
+<h3 id="1-_u7B80_u4ECB"><a href="#1-_u7B80_u4ECB" class="headerlink" title="1.简介"></a>1.简介</h3><p><img src="https://d13yacurqjgara.cloudfront.net/users/221935/screenshots/2474295/animation.gif" alt="uCrop.png"></p>
+<p>在项目开发中,我们难免会有一些功能,比如上传用户头像,上传图片等等会使用到图片裁剪的功能,为了节省开发时间,我们一般不会去自己开发一个图片剪裁库,这时候我们会去<code>github</code>上寻找各种开源的图片裁剪库,找来找去会发现目前最好用的就要数<code>Yalantis</code>公司出的<a href="https://github.com/Yalantis/uCrop" target="_blank" rel="external">uCrop</a>了.这也是最近刚刚开源的一个库,<code>Yalantis</code>专门写了一篇文章来说明问什么会有<code>uCrop</code>这个项目,以及对比了目前主流的几个图片剪裁的项目,地址<a href="https://yalantis.com/blog/introducing-ucrop-our-own-image-cropping-library-for-android/" target="_blank" rel="external">在这</a>.英文不错的同学可以去看看,话说英文对工程师来说还是很重要的,读英文资料以及逛英文社区可以很好的拓宽我们的技术视野,也能第一时间接触最前沿的技术。好了废话不多说,今天我们就来看看<code>uCrop</code>这个目前最好的图片剪裁库是如何使用以及实现的:<br><a id="more"></a></p>
+<h3 id="2-_u4F7F_u7528_u65B9_u6CD5"><a href="#2-_u4F7F_u7528_u65B9_u6CD5" class="headerlink" title="2.使用方法"></a>2.使用方法</h3><p>作为最好用的图片剪裁库,<code>uCrop</code>的使用方法当然是相当简单的:</p>
+<h4 id="1-AndroidManifest_u4E2D_u6CE8_u518CUCropActivity"><a href="#1-AndroidManifest_u4E2D_u6CE8_u518CUCropActivity" class="headerlink" title="1.AndroidManifest中注册UCropActivity"></a>1.AndroidManifest中注册UCropActivity</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=<span class="string">"com.yalantis.ucrop.UCropActivity"</span></span><br><span class="line">    android:screenOrientation=<span class="string">"portrait"</span></span><br><span class="line">    android:theme=<span class="string">"@style/Theme.AppCompat.Light.NoActionBar"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="2-_u914D_u7F6EuCrop_u53C2_u6570"><a href="#2-_u914D_u7F6EuCrop_u53C2_u6570" class="headerlink" title="2.配置uCrop参数"></a>2.配置uCrop参数</h4><p>你可以通过建造者模式来创建一个<code>uCrop</code>对象,并且可以通过<code>UCrop.Options</code>来设置一些个性化的参数:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UCrop.of(sourceUri, destinationUri)</span><br><span class="line">    .withAspectRatio(<span class="number">16</span>, <span class="number">9</span>)</span><br><span class="line">    .withMaxResultSize(maxWidth, maxHeight)</span><br><span class="line">    .start(context);</span><br></pre></td></tr></table></figure>
+<p>其中<code>sourceUri</code>代表选择图片的<code>Uri</code>地址,<code>destinationUri</code>代表图片裁剪完毕后保存的<code>Uri</code>地址,<code>withAspectRatio(16, 9)</code>表示设定你需要裁剪的图片的宽高比,这里表示希望<code>16:9</code>,当然你也可以选择<code>useSourceImageAspectRatio()</code>来确保裁剪后的图片的宽高比和原图相同,如果选择了上面两项,则进入裁剪界面后是无法再改变裁剪的宽高比的。如果你需要动态的改变图片裁剪的比例,那么什么都不设置就好了。<code>withMaxResultSize(maxWidth, maxHeight)</code>设置裁剪后的图片的最大宽度和高度,<code>start(context)</code>方法即可开启裁剪.</p>
+<p><code>uCrop</code>很友善的提供给了我们更多可以自定义方法,我们可以通过<code>UCrop.Options</code>来设定:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">UCrop.Options options = <span class="keyword">new</span> UCrop.Options();</span><br><span class="line"><span class="comment">//设置裁剪图片的保存格式</span></span><br><span class="line">options.setCompressionFormat(Bitmap.CompressFormat.PNG);</span><br><span class="line"><span class="comment">//设置裁剪图片的图片质量</span></span><br><span class="line">options.setCompressionQuality(<span class="number">90</span>);</span><br><span class="line"><span class="comment">//设置你想要指定的可操作的手势</span></span><br><span class="line">options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.ALL);</span><br><span class="line"><span class="comment">//设置uCropActivity里的UI样式</span></span><br><span class="line">options.setMaxScaleMultiplier(<span class="number">5</span>);</span><br><span class="line">options.setImageToCropBoundsAnimDuration(<span class="number">666</span>);</span><br><span class="line">options.setDimmedLayerColor(Color.CYAN);</span><br><span class="line">options.setOvalDimmedLayer(<span class="keyword">true</span>);</span><br><span class="line">options.setShowCropFrame(<span class="keyword">false</span>);</span><br><span class="line">options.setCropGridStrokeWidth(<span class="number">20</span>);</span><br><span class="line">options.setCropGridColor(Color.GREEN);</span><br><span class="line">options.setCropGridColumnCount(<span class="number">2</span>);</span><br><span class="line">options.setCropGridRowCount(<span class="number">1</span>);</span><br><span class="line"><span class="comment">//最后别忘记调用</span></span><br><span class="line">uCrop.withOptions(options);</span><br></pre></td></tr></table></figure>
+<h4 id="3-_u5728onActivityResult_u4E2D_u5904_u7406_u88C1_u526A_u540E_u7684_u7ED3_u679C"><a href="#3-_u5728onActivityResult_u4E2D_u5904_u7406_u88C1_u526A_u540E_u7684_u7ED3_u679C" class="headerlink" title="3.在onActivityResult中处理裁剪后的结果"></a>3.在onActivityResult中处理裁剪后的结果</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (resultCode == RESULT_OK &amp;&amp; requestCode == UCrop.REQUEST_CROP) &#123;</span><br><span class="line">        <span class="keyword">final</span> Uri resultUri = UCrop.getOutput(data);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (resultCode == UCrop.RESULT_ERROR) &#123;</span><br><span class="line">        <span class="keyword">final</span> Throwable cropError = UCrop.getError(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-_u7C7B_u5173_u7CFB_u56FE"><a href="#3-_u7C7B_u5173_u7CFB_u56FE" class="headerlink" title="3.类关系图"></a>3.类关系图</h3><p><img src="http://upload-images.jianshu.io/upload_images/1485091-2dc8413a8b747851.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="uCrop-classes-relation.png"></p>
+<p><code>uCrop</code>的整体设计非常的清晰,这里的类图我省去了<code>UCrop</code>类和<code>UCropActivity</code>类,我只画了最核心功能的类图,从类图上来看<code>UCropView</code>包含了<code>OverlayView</code>是用来绘制裁剪页面上的裁剪格子的,整体的裁剪功能都是通过<code>GestureCropImageView</code>继承<code>CropImageView</code>继承<code>TransformImageView</code>然后最终继承自<code>ImageView</code>的这三个类来完成了,<code>GestureCropImageView</code>负责监听各种手势然后调用父类的方法来完成图片的旋转,方法和位移操作,<code>CropImageView</code>是用来完成图片裁剪工作,以及确保图片是处在正确的状态,以及负责完成一些动画.<code>TransformImageView</code>则是负责旋转,放大,缩小以及位移操作的。我们先对<code>uCrop</code>有一个整体的了解,下面我们就来具体看看<code>uCrop</code>是如何实现的:</p>
+<h3 id="4-_u6E90_u7801_u5206_u6790"><a href="#4-_u6E90_u7801_u5206_u6790" class="headerlink" title="4.源码分析"></a>4.源码分析</h3><h4 id="1-UCrop_u548CUCropActivity_u7684_u5B9E_u73B0"><a href="#1-UCrop_u548CUCropActivity_u7684_u5B9E_u73B0" class="headerlink" title="1.UCrop和UCropActivity的实现"></a>1.UCrop和UCropActivity的实现</h4><p><code>UCropActivity</code>就是我们用来裁剪照片的<code>Activity</code>了,对于<code>Activity</code>大家应该都很熟悉了,我们就不多说了.而<code>UCrop</code>类在前面的使用方法中我们也介绍过了,主要是用来提供一个入口以及一系列的调用方法和提供自定义参数的设定,在此类开源项目中很常见,下面我们就主要介绍<code>uCrop</code>库核心的裁剪功能是如何实现的。</p>
+<h4 id="2-_u8C03_u7528_u6D41_u7A0B_u5206_u6790"><a href="#2-_u8C03_u7528_u6D41_u7A0B_u5206_u6790" class="headerlink" title="2.调用流程分析"></a>2.调用流程分析</h4><p>看到这里,我假设大家已经有使用过<code>uCrop</code>或者已经至少把项目<code>clone</code>下来<code>run</code>了一遍体验了一下了,在<code>uCrop</code>里我们可以通过手势来缩放,旋转图片。那么我们就从一次双指缩放的手势来对整个调用流程进行分析:</p>
+<p><strong>(1)GestureCropImageView的实现</strong></p>
+<p>在看这类有UI控件的项目的时候,我们一般直接找到对应控件然后看具体是如何实现的就行了,这里我们看了<code>UCropActivity</code>的布局以及代码就能知道我们想知道的就在<code>GestureCropImageView</code>中,所以我们直接看看<code>GestureCropImageView</code>是如何实现的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GestureCropImageView</span> <span class="keyword">extends</span> <span class="title">CropImageView</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ScaleGestureDetector mScaleDetector;</span><br><span class="line">    <span class="keyword">private</span> RotationGestureDetector mRotateDetector;</span><br><span class="line">    <span class="keyword">private</span> GestureDetector mGestureDetector;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mMidPntX, mMidPntY;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ((event.getAction() &amp; MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) &#123;</span><br><span class="line">            cancelAllAnimations();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果有多个手指触摸,则计算出两个手指之前的中心点坐标</span></span><br><span class="line">        <span class="keyword">if</span> (event.getPointerCount() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            mMidPntX = (event.getX(<span class="number">0</span>) + event.getX(<span class="number">1</span>)) / <span class="number">2</span>;</span><br><span class="line">            mMidPntY = (event.getY(<span class="number">0</span>) + event.getY(<span class="number">1</span>)) / <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//依次将事件传递给mGestureDetector,mIsRotateEnabled,mRotateDetector处理</span></span><br><span class="line">        mGestureDetector.onTouchEvent(event);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mIsScaleEnabled) &#123;</span><br><span class="line">            mScaleDetector.onTouchEvent(event);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mIsRotateEnabled) &#123;</span><br><span class="line">            mRotateDetector.onTouchEvent(event);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果手指离开,则检测图片是否完全充满裁剪框,如果没有则缩放至完全充满裁剪框</span></span><br><span class="line">        <span class="keyword">if</span> ((event.getAction() &amp; MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) &#123;</span><br><span class="line">            setImageToWrapCropBounds();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.init();</span><br><span class="line">        setupGestureListeners();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setupGestureListeners</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mGestureDetector = <span class="keyword">new</span> GestureDetector(getContext(), <span class="keyword">new</span> GestureListener(), <span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">        mScaleDetector = <span class="keyword">new</span> ScaleGestureDetector(getContext(), <span class="keyword">new</span> ScaleListener());</span><br><span class="line">        mRotateDetector = <span class="keyword">new</span> RotationGestureDetector(<span class="keyword">new</span> RotateListener());</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面就是<code>GestureCropImageView</code>的实现,这里省略了构造方法以及其余一些代码,总体代码不多,我们可以很清楚的看到首先初始化了<code>ScaleGestureDetector</code>,<code>RotationGestureDetector</code>和<code>GestureDetector</code>三个手势监听的相关类,然后在<code>onTouchEvent()</code>方法中依次交给这三个<code>GestureDetector</code>来处理触摸事件。如果有指定的触摸事件发生则会回调对应的接口,然后就执行相应的操作了。</p>
+<p>在使用<code>uCrop</code>中我们发现可以将图片拖动出我们的裁剪框之外,但是松手之后图片都会自动回弹回去并自动适应裁剪框,当缩放或者旋转操作时都有可能触发,那么这个到底是如何实现的呢?实际上就是上面<code>onTouchEvent()</code>方法中最后调用的那个方法<code>setImageToWrapCropBounds();</code>中实现的,我们下面会详细分析。那么好我们已经知道了<code>GestureCropImageView</code>类是如何实现以及它的职责了,那么现在我们假设我们做了一个双指缩放的手势,这将会回调<code>ScaleListener</code>的<code>onScale()</code>方法,代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ScaleListener</span> <span class="keyword">extends</span> <span class="title">ScaleGestureDetector</span>.<span class="title">SimpleOnScaleGestureListener</span> </span>&#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onScale</span><span class="params">(ScaleGestureDetector detector)</span> </span>&#123;</span><br><span class="line">        postScale(detector.getScaleFactor(), mMidPntX, mMidPntY);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到调用了<code>postScale()</code>方法,其中<code>detector.getScaleFactor()</code>是表示当前两个手指之间的距离与上一次移动的手指距离之比,<code>mMidPntX</code>和<code>mMidPntY</code>是量手指之间的中心点坐标,我们跟进<code>postScale()</code>方法,发现它是在<code>CropImageView</code>里也就是<code>GestureCropImageView</code>的父类中实现的,接下来我们转到<code>CropImageView</code>中。</p>
+<p><strong>(2)CropImageView中postScale()的实现</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postScale</span><span class="params">(<span class="keyword">float</span> deltaScale, <span class="keyword">float</span> px, <span class="keyword">float</span> py)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (deltaScale &gt; <span class="number">1</span> &amp;&amp; getCurrentScale() * deltaScale &lt;= getMaxScale()) &#123;</span><br><span class="line">        <span class="keyword">super</span>.postScale(deltaScale, px, py);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (deltaScale &lt; <span class="number">1</span> &amp;&amp; getCurrentScale() * deltaScale &gt;= getMinScale()) &#123;</span><br><span class="line">        <span class="keyword">super</span>.postScale(deltaScale, px, py);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很简单,就是判断了还是否可以缩放,然后继续调用了父类的<code>postScale()</code>方法,我们知道<code>CropImageView</code>父类是<code>TransformImageView</code>那我们继续来看:</p>
+<p><strong>(3)TransformImageView中postScale()的实现</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postScale</span><span class="params">(<span class="keyword">float</span> deltaScale, <span class="keyword">float</span> px, <span class="keyword">float</span> py)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (deltaScale != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//变化当前的matrix对象</span></span><br><span class="line">        mCurrentImageMatrix.postScale(deltaScale, deltaScale, px, py);</span><br><span class="line">        <span class="comment">//设置ImageMatrix</span></span><br><span class="line">        setImageMatrix(mCurrentImageMatrix);</span><br><span class="line">        <span class="comment">//回调mTransformImageListener接口</span></span><br><span class="line">        <span class="keyword">if</span> (mTransformImageListener != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mTransformImageListener.onScale(getMatrixScale(mCurrentImageMatrix));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>TransformImageView</code>中根据设置<code>ImageView</code>中的<code>matrix</code>对象来使图片进行缩放变化的,<code>Matrix</code>在我们进行图像变换处理时经常用到,具体的介绍和详解请参照<a href="http://www.cnblogs.com/qiengo/archive/2012/06/30/2570874.html#code" target="_blank" rel="external">这篇文章</a>。如果原理看不懂可以直接看下面代码中是如何使用的即可。</p>
+<p>然后我们看到<code>setImageMatrix(mCurrentImageMatrix);</code>又调用了<code>updateCurrentImagePoints();</code>方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateCurrentImagePoints</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mCurrentImageMatrix.mapPoints(mCurrentImageCorners, mInitialImageCorners);</span><br><span class="line">    mCurrentImageMatrix.mapPoints(mCurrentImageCenter, mInitialImageCenter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的<code>mCurrentImageMatrix.mapPoints(float[] dst, float[] src);</code>方法的意思就是将<code>src</code>数组通过这个<code>matrix</code>变换赋值给<code>dst</code>数组,在这里的意思就是将最初我们保存的四个顶点的数组<code>mInitialImageCorners</code>通过这个<code>matrix</code>变换后赋值给<code>mCurrentImageCorners</code>。同样<code>mInitialImageCenter</code>中保存的中点坐标也进行对应的操作,之所以保存这些是因为我们接下来的运算要使用.</p>
+<p>其实到这里我们一次缩放的手势就分析完了,这时候如果我们将手指抬起就会调用<code>GestureCropImageView</code>中的<code>setImageToWrapCropBounds();</code>方法,前面我们已经介绍了这个方法的作用,下面我们就具体来看看它是怎么实现的:</p>
+<h4 id="3-setImageToWrapCropBounds_28_29_u65B9_u6CD5_u7684_u5B9E_u73B0"><a href="#3-setImageToWrapCropBounds_28_29_u65B9_u6CD5_u7684_u5B9E_u73B0" class="headerlink" title="3.setImageToWrapCropBounds()方法的实现"></a>3.setImageToWrapCropBounds()方法的实现</h4><p><code>setImageToWrapCropBounds();</code>方法是在<code>CropImageView</code>里实现的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setImageToWrapCropBounds</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    setImageToWrapCropBounds(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setImageToWrapCropBounds</span><span class="params">(<span class="keyword">boolean</span> animate)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!isImageWrapCropBounds()) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接调用了<code>setImageToWrapCropBounds(boolean animate);</code>所以这里传入的<code>bool</code>值就是是否做动画,这里是<code>true</code>,这里先判断了<code>isImageWrapCropBounds()</code>,如果返回<code>false</code>才执行具体的代码.这里我们先省略,那么<code>isImageWrapCropBounds()</code>方法从名字上看是检测图片当前是不是包裹了裁剪的区域。如果返回是<code>false</code>那么里面的逻辑肯定是对图片进行位移或者缩放变换然后充满裁剪区域。我们先来看看<code>isImageWrapCropBounds()</code>如何实现的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isImageWrapCropBounds</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//将当前保存的图片的四个顶点数组传入</span></span><br><span class="line">    <span class="keyword">return</span> isImageWrapCropBounds(mCurrentImageCorners);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isImageWrapCropBounds</span><span class="params">(<span class="keyword">float</span>[] imageCorners)</span> </span>&#123;</span><br><span class="line">    mTempMatrix.reset();</span><br><span class="line">    <span class="comment">//利用一个matrix先逆旋转当前旋转的角度.</span></span><br><span class="line">    mTempMatrix.setRotate(-getCurrentAngle());</span><br><span class="line">    <span class="comment">//得到不旋转的图片的顶点数组</span></span><br><span class="line">    <span class="keyword">float</span>[] unrotatedImageCorners = Arrays.copyOf(imageCorners, imageCorners.length);</span><br><span class="line">    mTempMatrix.mapPoints(unrotatedImageCorners);</span><br><span class="line">    <span class="comment">//先从mCropRect得到四个顶点数组,然后做matrix变换,这里就有逆向的旋转变换了</span></span><br><span class="line">    <span class="keyword">float</span>[] unrotatedCropBoundsCorners = RectUtils.getCornersFromRect(mCropRect);</span><br><span class="line">    mTempMatrix.mapPoints(unrotatedCropBoundsCorners);</span><br><span class="line">    <span class="comment">//最后比较当前图片所形成的Rect是否包含旋转过后的mCropRect所形成的Rect</span></span><br><span class="line">    <span class="comment">//RectUtils.trapToRect(float[] array)方法是用来获得包含当前所有点的最小矩形</span></span><br><span class="line">    <span class="keyword">return</span> RectUtils.trapToRect(unrotatedImageCorners).contains(RectUtils.trapToRect(unrotatedCropBoundsCorners));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为这里也算是一个比较<code>trick</code>的做法,先将原图转换成未旋转的状态,然后再旋转我们裁剪的区域,然后获得到这个区域形成的最小矩形,看看是否包含在原图的区域中来判断裁剪区域是否完全在图片中,这里也有一篇<code>uCrop</code>的开发者写的文章<a href="https://yalantis.com/blog/how-we-created-ucrop-our-own-image-cropping-library-for-android/" target="_blank" rel="external">我们是如何开发uCrop的</a>。里面同样解释了为何这样做。</p>
+<p>如果这里返回了<code>false</code>就会执行<code>if</code>里的内容,那么我们来看看到底是如何实现的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setImageToWrapCropBounds</span><span class="params">(<span class="keyword">boolean</span> animate)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!isImageWrapCropBounds()) &#123;</span><br><span class="line">        <span class="comment">//得到当前图片的中心点坐标</span></span><br><span class="line">        <span class="keyword">float</span> currentX = mCurrentImageCenter[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">float</span> currentY = mCurrentImageCenter[<span class="number">1</span>];</span><br><span class="line">        <span class="comment">//得到当前图片的缩放比例</span></span><br><span class="line">        <span class="keyword">float</span> currentScale = getCurrentScale();</span><br><span class="line">        <span class="comment">//得到裁剪区域中心和当前图片中心的偏移量</span></span><br><span class="line">        <span class="keyword">float</span> deltaX = mCropRect.centerX() - currentX;</span><br><span class="line">        <span class="keyword">float</span> deltaY = mCropRect.centerY() - currentY;</span><br><span class="line">        <span class="keyword">float</span> deltaScale = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//给mTempMatrix 设置偏移量</span></span><br><span class="line">        mTempMatrix.reset();</span><br><span class="line">        mTempMatrix.setTranslate(deltaX, deltaY);</span><br><span class="line">        <span class="comment">//对图片做matrix变换.</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">float</span>[] tempCurrentImageCorners = Arrays.copyOf(mCurrentImageCorners, mCurrentImageCorners.length);</span><br><span class="line">        mTempMatrix.mapPoints(tempCurrentImageCorners);</span><br><span class="line">        <span class="comment">//做完变换后再检测是否平移变换之后,图片就充满了裁剪区域</span></span><br><span class="line">        <span class="keyword">boolean</span> willImageWrapCropBoundsAfterTranslate = isImageWrapCropBounds(tempCurrentImageCorners);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (willImageWrapCropBoundsAfterTranslate) &#123;</span><br><span class="line">            <span class="comment">//如果平移转换就可以充满裁剪区域</span></span><br><span class="line">            <span class="comment">//那么就找出最合适的偏移量</span></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">float</span>[] imageIndents = calculateImageIndents();</span><br><span class="line">            deltaX = -(imageIndents[<span class="number">0</span>] + imageIndents[<span class="number">2</span>]);</span><br><span class="line">            deltaY = -(imageIndents[<span class="number">1</span>] + imageIndents[<span class="number">3</span>]);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//如果不能充满裁剪区域</span></span><br><span class="line">            RectF tempCropRect = <span class="keyword">new</span> RectF(mCropRect);</span><br><span class="line">            mTempMatrix.reset();</span><br><span class="line">            mTempMatrix.setRotate(getCurrentAngle());</span><br><span class="line">            mTempMatrix.mapRect(tempCropRect);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">float</span>[] currentImageSides = RectUtils.getRectSidesFromCorners(mCurrentImageCorners);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出需要缩放的比例差</span></span><br><span class="line">            deltaScale = Math.max(tempCropRect.width() / currentImageSides[<span class="number">0</span>],</span><br><span class="line">                    tempCropRect.height() / currentImageSides[<span class="number">1</span>]);</span><br><span class="line">            <span class="comment">// Ugly but there are always couple pixels that want to hide because of all these calculations</span></span><br><span class="line">            deltaScale *= <span class="number">1.01</span>;</span><br><span class="line">            deltaScale = deltaScale * currentScale - currentScale;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果需要动画</span></span><br><span class="line">        <span class="keyword">if</span> (animate) &#123;</span><br><span class="line">            post(mWrapCropBoundsRunnable = <span class="keyword">new</span> WrapCropBoundsRunnable(</span><br><span class="line">                    CropImageView.<span class="keyword">this</span>, mImageToWrapCropBoundsAnimDuration, currentX, currentY, deltaX, deltaY,</span><br><span class="line">                    currentScale, deltaScale, willImageWrapCropBoundsAfterTranslate));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            postTranslate(deltaX, deltaY);</span><br><span class="line">            <span class="keyword">if</span> (!willImageWrapCropBoundsAfterTranslate) &#123;</span><br><span class="line">                zoomInImage(currentScale + deltaScale, mCropRect.centerX(), mCropRect.centerY());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面就是如何计算位移以及缩放的代码了,注意在最后的时候如果需要动画的话,则通过一个<code>Runnable</code>对象<code>mWrapCropBoundsRunnable</code>来进行动画,具体的逻辑大家可以自行去看看也是比较清晰的。</p>
+<p>至此我们就大致分析了<code>uCrop</code>总体上是如何实现的,关于怎么加载的图片以及如何裁剪的图片我们这篇文章就不分析了,有兴趣的同学可以自行研究。</p>
+<h3 id="5-_u4E2A_u4EBA_u8BC4_u4EF7"><a href="#5-_u4E2A_u4EBA_u8BC4_u4EF7" class="headerlink" title="5.个人评价"></a>5.个人评价</h3><p>不愧是目前最优秀的图片剪裁库,无论从整个库产品方面的设计还是从代码的结构上来看,<code>uCrop</code>都是值得我们学习与使用的,以前也阅读过其他裁剪项目的源代码,整体对比上来看<code>uCrop</code>提供的方法以及定制性和易用性都是很棒的,值得推荐!</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/uCrop/" rel="tag">#uCrop</a>
+          
+            <a href="/tags/图片剪裁/" rel="tag">#图片剪裁</a>
+          
+            <a href="/tags/建造者模式/" rel="tag">#建造者模式</a>
+          
+            <a href="/tags/源代码分析/" rel="tag">#源代码分析</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/09/ViewDragHelper源代码分析/" rel="next" title="ViewDragHelper源代码分析">
+                <i class="fa fa-chevron-left"></i> ViewDragHelper源代码分析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/23/ViewAnimator源代码分析/" rel="prev" title="ViewAnimator源代码分析">
+                ViewAnimator源代码分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/16/uCrop源代码分析/"
+           data-title="uCrop源代码分析" data-url="http://yoursite.com/2016/03/16/uCrop源代码分析/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars0.githubusercontent.com/u/8402109?v=3&s=400"
+               alt="达庆凯" />
+          <p class="site-author-name" itemprop="name">达庆凯</p>
+          <p class="site-description motion-element" itemprop="description">做自己喜欢的事儿,顺手改变世界</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Skykai521" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2030683111" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_u7B80_u4ECB"><span class="nav-number">1.</span> <span class="nav-text">1.简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_u4F7F_u7528_u65B9_u6CD5"><span class="nav-number">2.</span> <span class="nav-text">2.使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AndroidManifest_u4E2D_u6CE8_u518CUCropActivity"><span class="nav-number">2.1.</span> <span class="nav-text">1.AndroidManifest中注册UCropActivity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-_u914D_u7F6EuCrop_u53C2_u6570"><span class="nav-number">2.2.</span> <span class="nav-text">2.配置uCrop参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-_u5728onActivityResult_u4E2D_u5904_u7406_u88C1_u526A_u540E_u7684_u7ED3_u679C"><span class="nav-number">2.3.</span> <span class="nav-text">3.在onActivityResult中处理裁剪后的结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-_u7C7B_u5173_u7CFB_u56FE"><span class="nav-number">3.</span> <span class="nav-text">3.类关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-_u6E90_u7801_u5206_u6790"><span class="nav-number">4.</span> <span class="nav-text">4.源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-UCrop_u548CUCropActivity_u7684_u5B9E_u73B0"><span class="nav-number">4.1.</span> <span class="nav-text">1.UCrop和UCropActivity的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-_u8C03_u7528_u6D41_u7A0B_u5206_u6790"><span class="nav-number">4.2.</span> <span class="nav-text">2.调用流程分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-setImageToWrapCropBounds_28_29_u65B9_u6CD5_u7684_u5B9E_u73B0"><span class="nav-number">4.3.</span> <span class="nav-text">3.setImageToWrapCropBounds()方法的实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-_u4E2A_u4EBA_u8BC4_u4EF7"><span class="nav-number">5.</span> <span class="nav-text">5.个人评价</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">达庆凯</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+<span id="busuanzi_container_site_uv">
+  本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"skykai521"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
